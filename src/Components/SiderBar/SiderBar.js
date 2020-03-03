@@ -8,6 +8,7 @@ import {
     TeamOutlined,
     UserOutlined,
   } from '@ant-design/icons';
+import { Link, } from 'react-router-dom';
 
 const {Sider } = Layout;
 const { SubMenu } = Menu;
@@ -32,10 +33,12 @@ class SiderBar extends Component {
             <Menu.Item key="1">
               <PieChartOutlined />
               <span>Option 1</span>
+                <Link to="/"></Link>
             </Menu.Item>
             <Menu.Item key="2">
               <DesktopOutlined />
               <span>Option 2</span>
+              <Link to="/1"></Link>
             </Menu.Item>
             <SubMenu
               key="sub1"
@@ -64,8 +67,10 @@ class SiderBar extends Component {
             </SubMenu>
             <Menu.Item key="9">
               <FileOutlined />
+              <Link to="/2"></Link>
             </Menu.Item>
           </Menu>
+          
         </Sider>
         );
     }
