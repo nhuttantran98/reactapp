@@ -1,80 +1,98 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './App.css';
 
-import { Layout, Menu, Avatar, Breadcrumb, Button } from 'antd';
-import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
-import SubMenu from 'antd/lib/menu/SubMenu';
+import { Layout, Menu, Avatar, Breadcrumb, Button, Card } from 'antd';
+import {
+  DesktopOutlined,
+  PieChartOutlined,
+  FileOutlined,
+  TeamOutlined,
+  UserOutlined,
+  ProjectFilled,
+} from '@ant-design/icons';
+// import SubMenu from 'antd/lib/menu/SubMenu';
 import Title from 'antd/lib/typography/Title';
+// import RouterURL from '../RouterURL/RouterURL';
+// import { Router, Link } from 'react-router-dom';
 
 const { Header, Content, Footer, Sider } = Layout;
+const { SubMenu } = Menu;
 
-function App() {
-  return (
-    <div className="App">
-      <Layout>
-        <Header style={{ padding: 10 }}>
-          <Avatar style={{ float: 'right' }} src='./logo512.png' />
-          <Title style={{ color: 'white' }} level={2}>AUTO MACHINE</Title>
-        </Header>
-        <Layout>
-          <Sider style={{ background: 'fff' }}>
-            <Menu
-              defaultSelectedKeys={['Dashboard']}
-              mode="inline"
-            >
-              <Menu.Item key='Dashboard'>
-                Dashboard
+class App extends React.Component {
+  state = {
+    collapse: false,
+  }
+
+  onCollapse = collapsed => {
+    console.log(collapsed);
+    this.setState({ collapsed });
+  };
+
+  render() {
+    return (
+      <Layout style={{ minHeight: '100vh' }}>
+          <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
+            <div className="logo" />
+            <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+              <Menu.Item key="1">
+                <PieChartOutlined />
+                <span>Option 1</span>
+              </Menu.Item>
+              <Menu.Item key="2">
+                <DesktopOutlined />
+                <span>Option 2</span>
               </Menu.Item>
               <SubMenu
+                key="sub1"
                 title={
                   <span>
-                    <UserOutlined></UserOutlined>
-                    <span>About US</span>
+                    <UserOutlined />
+                    <span>User</span>
                   </span>
                 }
               >
-                <Menu.ItemGroup key='AboutUs' title='About US'>
-                  <Menu.Item key='A'>
-                    A
-                  </Menu.Item>
-                  <Menu.Item key='B'>
-                    B
-                  </Menu.Item>
-                </Menu.ItemGroup>
+                <Menu.Item key="3">Quản lý</Menu.Item>
+                <Menu.Item key="4">Vận hành</Menu.Item>
+                <Menu.Item key="4">Add User</Menu.Item>
               </SubMenu>
-
-              <Menu.Item>
-                <UserOutlined></UserOutlined>
-                <span>Add User</span>
-              </Menu.Item>
-
               <SubMenu
+                key="sub2"
                 title={
                   <span>
-                    <UserOutlined></UserOutlined>
-                    <span>Add User</span>
+                    <TeamOutlined />
+                    <span>Máy sấy</span>
                   </span>
                 }
               >
+                <Menu.Item key="6">Danh sách</Menu.Item>
+                <Menu.Item key="8">Thêm máy sấy</Menu.Item>
               </SubMenu>
+              <Menu.Item key="9">
+                <FileOutlined />
+                <span>Công thức sấy</span>
+              </Menu.Item>
+              <Menu.Item key="10">
+                <ProjectFilled />
+                <span>Thống kê</span>
+              </Menu.Item>
             </Menu>
-            
           </Sider>
-
-          <Layout>
-            <Content style={{ padding: '0 50px' }}>
+          <Layout className="site-layout">
+            <Header className="site-layout-background" style={{ padding: 0 }} />
+            <Content style={{ margin: '0 16px' }}>
               <Breadcrumb style={{ margin: '16px 0' }}>
-                <Breadcrumb.Item>Dashboard</Breadcrumb.Item>
+                <Breadcrumb.Item>User</Breadcrumb.Item>
+                <Breadcrumb.Item>Bill</Breadcrumb.Item>
               </Breadcrumb>
-              <div className="site-layout-content">Content</div>
+              <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
+                Bill is a cat.
+            </div>
             </Content>
             <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
           </Layout>
-        </Layout>
       </Layout>
-
-    </div>
-  );
+    );
+  }
 }
 
 export default App;
