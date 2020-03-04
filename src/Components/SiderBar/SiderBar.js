@@ -24,7 +24,7 @@ class SiderBar extends Component {
     render() {
         return (
             <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
-          <div className="logo" style={{minHeight:50}}>
+          <div className="logo" style={{minHeight:'60px'}}>
             <Avatar style={{ float: 'left' }} src='./logo512.png' ></Avatar>
             <Title style={{ color: 'white' }} level={3}>SHRIDEEP</Title>
           </div>

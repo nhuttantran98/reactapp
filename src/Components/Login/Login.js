@@ -1,22 +1,24 @@
 import React, { Component } from 'react';
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button } from 'antd';
 
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import './LoginPage.css';
-class LoginPage extends Component {
 
+class Login extends Component {
+    formRef = React.createRef();
     onFinish = values => {
         console.log('Received values of form: ', values);
     };
 
     render() {
         return (
-            <div style={{width:'25%', margin:'auto', }}>
+            <div style={{width:'35%', margin:'auto', textAlign:'center',marginTop:'65px'}}>
                 <Form
+                ref={this.formRef}
                 name="normal_login"
                 className="login-form"
                 initialValues={{ remember: true }}
                 onFinish={this.onFinish}
+                style={{padding:'35px 35px 15px 35px',background:'white'}}
             >
                 <Form.Item
                     name="username"
@@ -35,16 +37,9 @@ class LoginPage extends Component {
                     />
                 </Form.Item>
                 <Form.Item>
-                    <Form.Item name="remember" valuePropName="checked" noStyle>
-                        <Checkbox>Remember me</Checkbox>
-                    </Form.Item>
-                </Form.Item>
-
-                <Form.Item>
                     <Button type="primary" htmlType="submit" className="login-form-button">
                         Log in
-              </Button>
-
+                    </Button>
                 </Form.Item>
             </Form>
             </div>
@@ -53,4 +48,4 @@ class LoginPage extends Component {
     }
 }
 
-export default LoginPage;
+export default Login;
