@@ -68,7 +68,10 @@ class SiderBar extends Component {
                 </span>
               }
             >
-              <Menu.Item key="6">Máy A</Menu.Item>
+              <Menu.Item key="6">
+                Máy A
+                <Link to="/may-a"></Link>
+              </Menu.Item>
               <Menu.Item key="8">Máy B</Menu.Item>
             </SubMenu>
             <Menu.Item key="9">

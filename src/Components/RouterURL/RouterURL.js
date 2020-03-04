@@ -9,7 +9,7 @@ import TestContentBar2 from '../TestContentBar2/TestContentBar2';
 import UserTable from '../UserPage/UserTable/UserTable';
 import UserAddAccount from '../UserPage/UserAddAccount/UserAddAccount';
 import Login from '../Login/Login';
-
+import Machine from '../Machine/Machine';
 
 class RouterURL extends Component {
     render() {
@@ -21,6 +21,7 @@ class RouterURL extends Component {
                         <Route  path="/2" component={TestContentBar2}/>
                         <Route  path="/all-user" component={UserTable}/>
                         <Route  path="/add-user" component={UserAddAccount}/>
+                        <Route  path="/may-a" component={Machine}/>
                         <Route  component={Login}/>
                     </Switch>
                 </div>
