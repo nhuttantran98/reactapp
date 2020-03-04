@@ -32,12 +32,12 @@ class SiderBar extends Component {
           <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
             <Menu.Item key="1">
               <PieChartOutlined />
-              <span>Option 1</span>
+              <span>Thống kê dữ liệu</span>
                 <Link to="/"></Link>
             </Menu.Item>
             <Menu.Item key="2">
               <DesktopOutlined />
-              <span>Option 2</span>
+              <span>Công thức sấy</span>
               <Link to="/1"></Link>
             </Menu.Item>
             <SubMenu
@@ -45,28 +45,36 @@ class SiderBar extends Component {
               title={
                 <span>
                   <UserOutlined />
-                  <span>User</span>
+                  <span>Quản lý tài khoản</span>
                 </span>
               }
             >
-              <Menu.Item key="3">Tom</Menu.Item>
-              <Menu.Item key="4">Bill</Menu.Item>
-              <Menu.Item key="5">Alex</Menu.Item>
+              <Menu.Item key="3">
+                Tài khoản Quản lý
+                <Link to="/all-user"></Link>
+              </Menu.Item>
+              <Menu.Item key="4">Tài khoản Vận hành</Menu.Item>
+              <Menu.Item key="5">
+                Tạo tài khoản
+                <Link to="/add-user"></Link>
+                </Menu.Item>
             </SubMenu>
             <SubMenu
               key="sub2"
               title={
                 <span>
                   <TeamOutlined />
-                  <span>Team</span>
+                  <span>Máy sấy</span>
                 </span>
               }
             >
-              <Menu.Item key="6">Team 1</Menu.Item>
-              <Menu.Item key="8">Team 2</Menu.Item>
+              <Menu.Item key="6">Máy A</Menu.Item>
+              <Menu.Item key="8">Máy B</Menu.Item>
             </SubMenu>
             <Menu.Item key="9">
+
               <FileOutlined />
+              Thiết lập nâng cao
               <Link to="/2"></Link>
             </Menu.Item>
           </Menu>
