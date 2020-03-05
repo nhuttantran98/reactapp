@@ -24,18 +24,18 @@ class Machine extends Component {
                         <div style={{margin:'30px',background:'white'}}>
                             <Row>
                                 <Col span={12}>
-                                    <Device></Device>
+                                    <Device status={true}>QUẠT HÚT</Device>
                                 </Col>
                                 <Col span={12}>
-                                    <Device></Device>
+                                    <Device status={false}>GIA NHIỆT</Device>
                                 </Col>
                             </Row>
                             <Row>
                                 <Col span={12}>
-                                    <Device></Device>
+                                    <Device status={false}>ĐÈN CHÍNH</Device>
                                 </Col>
                                 <Col span={12}>
-                                    <Device></Device>
+                                    <Device status={true}>ĐÈN PHỤ</Device>
                                 </Col>
                             </Row>
                         </div>
