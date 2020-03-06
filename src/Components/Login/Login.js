@@ -1,12 +1,30 @@
 import React, { Component } from 'react';
 import { Form, Input, Button } from 'antd';
-
+import {login} from './../UserFunction/UserFunction';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-
+import swal from 'sweetalert';
+import auth from '../auth';
+import './Login.css'
 class Login extends Component {
+
+
+    
     formRef = React.createRef();
     onFinish = values => {
-        console.log('Received values of form: ', values);
+        login({email:values.username,password:values.password}).then(res=>{
+            if(res){
+                auth.login(()=>{
+                    this.props.history.push(`/may-a`);
+                })
+            }else{
+                swal({
+                    title: "Oppss...!",
+                    text: "Sai Email hoac Password",
+                    icon: "error",
+                    button: "OK",
+                  });
+            }
+        })
     };
 
     render() {

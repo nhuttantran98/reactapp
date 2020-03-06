@@ -60,8 +60,6 @@ class UserTable extends Component {
                     key="action"
                     render={(text, record) => (
                         <span>
-                            {/* <a style={{ marginRight: 16 }} href="#"> Invite {record.lastName}</a>
-                            <a href="#"> Delete</a> */}
                             <Button type="link" >
                                 Edit
                             </Button>
