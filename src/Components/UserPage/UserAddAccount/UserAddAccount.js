@@ -1,6 +1,6 @@
 import React, { Component, } from 'react';
 import { Form, Input, Button,Radio, DatePicker} from 'antd';
-
+import {register} from './../../UserFunction/UserFunction';
 // const { Option } = Select;
 const layout = {
     labelCol: { span: 8 },
@@ -12,11 +12,16 @@ const tailLayout = {
 class UserAddAccount extends Component {
     formRef = React.createRef();
     onFinish = values => {
-        const DOB = values['dateofbirth'];
+        const DOB = values['dob'];
         const result = {
             ...values,
-            'dateofbirth': DOB.format('YYYY-MM-DD'),
+            'dob': DOB.format('YYYY-MM-DD'),
         }
+        register({first_name: result.first_name, last_name: result.last_name, password: result.password, email: result.email,dob: result.dob,phone: result.phone, role: result.role}).then(res=>{
+            if(res){
+                this.props.history.push(`/may-a`);
+            }
+        })
         console.log(result);
     };
 
@@ -81,23 +86,23 @@ class UserAddAccount extends Component {
                             <Input.Password />
                         </Form.Item>
 
-                        <Form.Item name="radio-group" label="Chức năng" rules={[{ required: true}]}>
+                        <Form.Item name="role" label="Chức năng" rules={[{ required: true}]}>
                             <Radio.Group>
                             <Radio value="quanly">Quản lý</Radio>
                             <Radio value="vanhanh">Vận hành</Radio>
                             </Radio.Group>
                         </Form.Item>
 
-                        <Form.Item name="firstname" label="Họ và đệm" rules={[{ required: true,
+                        <Form.Item name="first_name" label="Họ và đệm" rules={[{ required: true,
                                 message: 'Xin hãy nhập Họ và tên đệm!', }]}>
                             <Input />
                         </Form.Item>
-                        <Form.Item name="lastname" label="Tên" rules={[{ required: true,
+                        <Form.Item name="last_name" label="Tên" rules={[{ required: true,
                                 message: 'Xin hãy nhập Tên!', }]}>
                             <Input />
                         </Form.Item>
 
-                        <Form.Item name="dateofbirth" label="Ngày sinh" rules={[{ type: 'object', required: true, message: 'Please select time!' }]}>
+                        <Form.Item name="dob" label="Ngày sinh" rules={[{ type: 'object', required: true, message: 'Please select time!' }]}>
                             <DatePicker showTime format="YYYY-MM-DD" />
                         </Form.Item>
 
