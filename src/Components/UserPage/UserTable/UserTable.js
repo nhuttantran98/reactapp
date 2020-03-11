@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Table, Tag, Button, Layout, Breadcrumb } from 'antd';
 import {getAllUsers} from './../../UserFunction/UserFunction';
+import { Link, } from 'react-router-dom';
 const { Column, ColumnGroup } = Table;
 const { Content } = Layout;
 // var data = [
@@ -60,7 +61,7 @@ class UserTable extends Component {
             </Breadcrumb>
                 <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
                 <Table dataSource={this.state.data}>
-                <ColumnGroup title="Name">
+                <ColumnGroup title="Full Name">
                     <Column title="First Name" dataIndex="firstname" key="firstname" />
                     <Column title="Last Name" dataIndex="lastname" key="lastname" />
                 </ColumnGroup>
@@ -74,14 +75,21 @@ class UserTable extends Component {
                 } }/>
             
                 <Column title="Phone" dataIndex="phone" key="phone" />
-
+                <Column title="Email" dataIndex="email" key="email" />
                 <Column
                     title="Action"
                     key="action"
-                    render={(text, record) => (
+                    dataIndex="key"
+                    render={key => (
                         <span>
                             <Button type="link" >
-                                Edit
+                                {/* <Link to ={`/edit-user/${key}`} >Edit</Link> */}
+                                <Link to={{
+                                    pathname:'/edit-user',
+                                    aboutProps:{
+                                        id:`${key}`
+                                    }
+                                }}>Edit</Link>
                             </Button>
                             <Button type="link" danger>
                                 Delete

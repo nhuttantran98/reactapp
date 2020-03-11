@@ -46,3 +46,35 @@ export const getAllUsers = user => {
         })
 }
 
+export const getProfileUser = id => {
+    return axios
+        .post('/users/profile',{id: id},{
+            headers:{
+                'authorization' : localStorage.getItem('usertoken')
+            }
+        })
+        .then(response=>{
+            return response.data;
+        })
+        .catch(err=>{
+            console.log(err);
+        })
+}
+
+export const updateUser = user =>{
+    return axios
+        .post('/users/update-user',{
+            first_name: user.first_name,
+            last_name:user.last_name,
+            email: user.email,
+            dob: user.dob,
+            role: user.role,
+            phone: user.phone
+        })
+        .then(response=>{
+            console.log(response);
+            console.log('Updated!');
+        }).catch(err=>{
+            console.log(err);
+        })
+}
