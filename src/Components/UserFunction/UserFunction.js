@@ -12,7 +12,9 @@ export const register = newUser =>{
             phone: newUser.phone
         })
         .then(response=>{
+            
             console.log('Registerd');
+            return response.data;
         })
 }
 
@@ -65,18 +67,26 @@ export const updateUser = user =>{
     return axios
         .post('/users/update-user',{
             id: user.id,
-            first_name: user.first_name,
-            last_name:user.last_name,
-            email: user.email,
-            dob: user.dob,
-            role: user.role,
-            phone: user.phone
         })
         .then(response=>{
             console.log(response);
             return response.data;
-
         }).catch(err=>{
             console.log(err);
+            return err;
+        })
+}
+
+export const deleteUser = user =>{
+    return axios
+        .post('/users/delete-user',{
+            id: user.id,
+        })
+        .then(response=>{
+            console.log(response);
+            return response.data;
+        }).catch(err=>{
+            console.log(err);
+            return err;
         })
 }

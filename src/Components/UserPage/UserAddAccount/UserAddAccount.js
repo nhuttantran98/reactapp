@@ -1,6 +1,8 @@
 import React, { Component, } from 'react';
 import { Form, Input, Button,Radio, DatePicker} from 'antd';
 import {register} from './../../UserFunction/UserFunction';
+import swal from 'sweetalert';
+
 // const { Option } = Select;
 const layout = {
     labelCol: { span: 8 },
@@ -18,8 +20,26 @@ class UserAddAccount extends Component {
             'dob': DOB.format('YYYY-MM-DD'),
         }
         register({first_name: result.first_name, last_name: result.last_name, password: result.password, email: result.email,dob: result.dob,phone: result.phone, role: result.role}).then(res=>{
-            if(res){
-                this.props.history.push(`/may-a`);
+            console.log(res);
+            // if(res){
+            //     this.props.history.push(`/may-a`);
+            // }
+            if(res.error){
+                swal({
+                    title: "Oppss...!",
+                    text: "Email đã tồn tại!",
+                    icon: "error",
+                    button: "OK",
+                  });
+                
+            }else{
+                swal({
+                    title: "Tadaaa...!",
+                    text: "Đăng ký thành công!",
+                    icon: "success",
+                    button: "OK",
+                  });
+                  this.props.history.push(`/may-a`);
             }
         })
         console.log(result);

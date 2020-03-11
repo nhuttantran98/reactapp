@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Table, Tag, Button, Layout, Breadcrumb } from 'antd';
-import {getAllUsers} from './../../UserFunction/UserFunction';
+import {getAllUsers,deleteUser} from './../../UserFunction/UserFunction';
 import { Link, } from 'react-router-dom';
+import swal from 'sweetalert';
+
 const { Column, ColumnGroup } = Table;
 const { Content } = Layout;
 // var data = [
@@ -50,6 +52,32 @@ class UserTable extends Component {
         })
     }
 
+    deleteUser = key=> {
+        deleteUser({id:key}).then(res=>{
+            console.log(key);
+            if(res.error){
+                swal({
+                    title: "Oppss...!",
+                    text: "Xóa không thành công!",
+                    icon: "error",
+                    button: "OK",
+                  });
+            }else{
+
+                let tempData = this.state.data.filter(item => item.key !== key)
+                console.log(tempData);
+                this.setState({
+                    data: tempData
+                })
+                swal({
+                    title: "Tadaaa...!",
+                    text: "Xóa thành công!",
+                    icon: "success",
+                    button: "OK",
+                  });
+            }
+        })
+    }
 
     render() {
 
@@ -91,7 +119,7 @@ class UserTable extends Component {
                                     }
                                 }}>Edit</Link>
                             </Button>
-                            <Button type="link" danger>
+                            <Button type="link" danger onClick={()=>this.deleteUser(key)}>
                                 Delete
                             </Button>
                         </span>
