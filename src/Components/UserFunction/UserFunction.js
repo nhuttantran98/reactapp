@@ -64,6 +64,7 @@ export const getProfileUser = id => {
 export const updateUser = user =>{
     return axios
         .post('/users/update-user',{
+            id: user.id,
             first_name: user.first_name,
             last_name:user.last_name,
             email: user.email,
@@ -73,7 +74,8 @@ export const updateUser = user =>{
         })
         .then(response=>{
             console.log(response);
-            console.log('Updated!');
+            return response.data;
+
         }).catch(err=>{
             console.log(err);
         })

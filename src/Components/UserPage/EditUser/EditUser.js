@@ -2,6 +2,8 @@ import React, { Component, } from 'react';
 import { Form, Input, Button,Radio, DatePicker} from 'antd';
 import moment from 'moment';
 import {getProfileUser,updateUser} from './../../UserFunction/UserFunction';
+import swal from 'sweetalert';
+
 // const { Option } = Select;
 const layout = {
     labelCol: { span: 8 },
@@ -15,7 +17,8 @@ class EditUser extends Component {
     constructor(props) {
         super(props);
         this.state={
-            dob:"1900/12/12"
+            dob:"1900/12/12",
+            id: "-1"
         }
     }
     
@@ -32,7 +35,8 @@ class EditUser extends Component {
                 last_name: user.last_name,
             })         
             this.setState({
-                dob: user.dob
+                dob: user.dob,
+                id: user.id
             })
             
         }
@@ -45,9 +49,21 @@ class EditUser extends Component {
             ...values,
             // 'dob': DOB.format('YYYY-MM-DD'),
         }
-        updateUser({first_name: result.first_name, last_name: result.last_name, email: result.email, dob: this.state.dob,phone: result.phone, role: result.role}).then(res=>{
-            if(res){
-                this.props.history.push(`/may-a`);
+        updateUser({id: this.state.id,first_name: result.first_name, last_name: result.last_name, email: result.email, dob: this.state.dob,phone: result.phone, role: result.role}).then(res=>{
+            if(res!=="error"){
+                swal({
+                    title: "Tadaa...!",
+                    text: `${res}`,
+                    icon: "success",
+                    button: "OK",
+                });
+            }else{
+                swal({
+                    title: "Opposss...!",
+                    text: `Email có thể bị trùng. Hãy thử lại!`,
+                    icon: "error",
+                    button: "OK",
+                });
             }
         })
         console.log(result);
@@ -136,7 +152,7 @@ class EditUser extends Component {
                             <DatePicker selected={moment(`${this.state.dob}`,"YYYY/MM/DD")} showTime format="YYYY/MM/DD" />
                         </Form.Item> */}
                         <Form.Item label="Ngày sinh" >
-                            <DatePicker value={moment(`${this.state.dob}`,"YYYY/MM/DD") } format={"YYYY/MM/DD"}></DatePicker>
+                            <DatePicker value={moment(`${this.state.dob}`,"YYYY/MM/DD") } format={"YYYY/MM/DD"} disabled></DatePicker>
                         </Form.Item>
 
                         <Form.Item name="phone" label="Số điện thoại" rules={[{ required: true,
