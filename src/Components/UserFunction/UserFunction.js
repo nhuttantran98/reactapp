@@ -67,6 +67,12 @@ export const updateUser = user =>{
     return axios
         .post('/users/update-user',{
             id: user.id,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            email: user.email,
+            dob: user.dob,
+            phone: user.phone,
+            role: user.role
         })
         .then(response=>{
             console.log(response);

@@ -16,7 +16,7 @@ class MachineAdd extends Component {
     formRef = React.createRef();
     onFinish = values => {
         console.log(values);
-        register({name: values.name, discription: values.discription,position: values.position}).then(res=>{
+        register({name: values.name, description: values.description,position: values.position}).then(res=>{
             console.log(res);
             if(res.error){
                 swal({
@@ -55,7 +55,7 @@ class MachineAdd extends Component {
                                 message: 'Xin hãy nhập Vị trí đặt máy!', }]}>
                             <Input />
                         </Form.Item>
-                        <Form.Item name="discription" label="Mô tả máy sấy" rules={[{ required: true,
+                        <Form.Item name="description" label="Mô tả máy sấy" rules={[{ required: true,
                                 message: 'Xin hãy nhập Mô tả!', }]}>
                             <TextArea row={4} />
                         </Form.Item>

@@ -3,8 +3,6 @@ import { Form, Input, Button,Radio, DatePicker} from 'antd';
 import moment from 'moment';
 import {getProfileUser,updateUser} from './../../UserFunction/UserFunction';
 import swal from 'sweetalert';
-
-// const { Option } = Select;
 const layout = {
     labelCol: { span: 8 },
     wrapperCol: { span: 16 },

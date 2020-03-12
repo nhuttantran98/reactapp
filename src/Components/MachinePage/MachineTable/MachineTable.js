@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Button, Layout, Breadcrumb, Avatar } from 'antd';
 import { AlertOutlined } from '@ant-design/icons';
-import {getAllMachines} from '../../MachineFunction/MachineFunction';
+import {getAllMachines,deleteMachine} from '../../MachineFunction/MachineFunction';
+import { Link, } from 'react-router-dom';
+import swal from 'sweetalert';
 const { Content } = Layout;
 
 class MachineTable extends Component {
@@ -27,6 +29,33 @@ class MachineTable extends Component {
         let result = myData.map(({ id: key, ...rest }) => ({ key, ...rest }));
         this.setState({
             data: result
+        })
+    }
+
+    deleteMachine = key=> {
+        deleteMachine({id:key}).then(res=>{
+            console.log(key);
+            if(res.error){
+                swal({
+                    title: "Oppss...!",
+                    text: "Xóa không thành công!",
+                    icon: "error",
+                    button: "OK",
+                  });
+            }else{
+
+                let tempData = this.state.data.filter(item => item.key !== key)
+                console.log(tempData);
+                this.setState({
+                    data: tempData
+                })
+                swal({
+                    title: "Tadaaa...!",
+                    text: "Xóa thành công!",
+                    icon: "success",
+                    button: "OK",
+                  });
+            }
         })
     }
 
@@ -56,9 +85,14 @@ class MachineTable extends Component {
                         <div>{item.position}</div>
                         <div>
                                 <Button type='link' style={{fontSize: '35px'}}>
-                                    Edit
+                                    <Link to={{
+                                        pathname:'/edit-machine',
+                                        aboutProps:{
+                                            id:`${item.key}`
+                                        }
+                                    }}>Edit</Link>
                                 </Button>
-                                <Button type='link' danger style={{fontSize: '35px'}}>
+                                <Button type='link' danger style={{fontSize: '35px'}} onClick={()=>this.deleteMachine(item.key)}>
                                     Delete
                                 </Button>
                         </div>

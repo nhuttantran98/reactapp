@@ -14,6 +14,7 @@ import ProtectedRoute from '../ProtectRoute/protectRoute';
 import EditUser from '../UserPage/EditUser/EditUser';
 import MachineTable from '../MachinePage/MachineTable/MachineTable';
 import MachineAdd from '../MachinePage/MachineAdd/MachineAdd';
+import MachineEdit from '../MachinePage/MachineEdit/MachineEdit';
 class RouterURL extends Component {
     render() {  
         return (
@@ -26,6 +27,8 @@ class RouterURL extends Component {
                         <Route  path="/all-machine" component={MachineTable}/>
                         <Route  path="/may-a" component={Machine}/>
                         <Route  path="/edit-user" component={EditUser}/>
+                        <Route  path="/edit-machine" component={MachineEdit}/>
+
                         <Route  path="/add-machine" component={MachineAdd}/>
                         <ProtectedRoute exact path ="/1" component={TestContentBar1}/>
                         <Route  component={Login}/>
