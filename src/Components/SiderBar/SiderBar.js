@@ -63,18 +63,36 @@ class SiderBar extends Component {
               key="sub2"
               title={
                 <span>
+                  <UserOutlined />
+                  <span>Quản lý máy sấy</span>
+                </span>
+              }
+            >
+              <Menu.Item key="6">
+                Danh sách máy sấy
+                <Link to="/all-machine"></Link>
+              </Menu.Item>
+              <Menu.Item key="7">
+                Tạo máy sấy
+                <Link to="/add-machine"></Link>
+                </Menu.Item>
+            </SubMenu>
+            <SubMenu
+              key="sub3"
+              title={
+                <span>
                   <TeamOutlined />
                   <span>Máy sấy</span>
                 </span>
               }
             >
-              <Menu.Item key="6">
+              <Menu.Item key="8">
                 Máy A
                 <Link to="/may-a"></Link>
               </Menu.Item>
-              <Menu.Item key="8">Máy B</Menu.Item>
+              <Menu.Item key="9">Máy B</Menu.Item>
             </SubMenu>
-            <Menu.Item key="9">
+            <Menu.Item key="10">
 
               <FileOutlined />
               Thiết lập nâng cao

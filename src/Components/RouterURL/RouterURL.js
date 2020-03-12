@@ -12,6 +12,7 @@ import Login from '../Login/Login';
 import Machine from '../Machine/Machine';
 import ProtectedRoute from '../ProtectRoute/protectRoute';
 import EditUser from '../UserPage/EditUser/EditUser';
+import MachineTable from '../MachinePage/MachineTable/MachineTable';
 class RouterURL extends Component {
     
     
@@ -26,6 +27,7 @@ class RouterURL extends Component {
                         <Route  path="/2" component={TestContentBar2}/>
                         <Route  path="/all-user" component={UserTable}/>
                         <Route  path="/add-user" component={UserAddAccount}/>
+                        <Route  path="/all-machine" component={MachineTable}/>
                         <Route  path="/may-a" component={Machine}/>
                         {/* <Route  path="/edit-user/:key" component={EditUser}/> */}
                         <Route  path="/edit-user" component={EditUser}/>

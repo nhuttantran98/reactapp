@@ -6,33 +6,6 @@ import swal from 'sweetalert';
 
 const { Column, ColumnGroup } = Table;
 const { Content } = Layout;
-// var data = [
-//     {
-//         key: '1',
-//         firstName: 'John',
-//         lastName: 'Brown',
-//         role: 'Quản lý',
-//         address: 'New York No. 1 Lake Park',
-//         tags: ['nice', 'developer'],
-//     },
-//     {
-//         key: '2',
-//         firstName: 'Jim',
-//         lastName: 'Green',
-//         role: 'Quản lý',
-//         address: 'London No. 1 Lake Park',
-//         tags: ['loser'],
-//     },
-//     {
-//         key: '3',
-//         firstName: 'Joe',
-//         lastName: 'Black',
-//         role: 'Vận hành',
-//         address: 'Sidney No. 1 Lake Park',
-//         tags: ['cool', 'teacher'],
-//     },
-// ];
-
 
 
 class UserTable extends Component {
