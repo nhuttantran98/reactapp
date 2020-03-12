@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Table, Tag, Button, Layout, Breadcrumb, Avatar } from 'antd';
+import { Button, Layout, Breadcrumb, Avatar } from 'antd';
 import { AlertOutlined } from '@ant-design/icons';
 import {getAllMachines} from '../../MachineFunction/MachineFunction';
-const { Column, ColumnGroup } = Table;
 const { Content } = Layout;
 
 class MachineTable extends Component {
@@ -11,28 +10,6 @@ class MachineTable extends Component {
         super(props);
         this.state = {
             data:[]
-            // data:[
-            //     {
-            //         key:'1',
-            //         position:'Nhà kho A',
-            //         description: 'thuc tap sinh dieu khien',
-            //         name:'COVID19',
-            //         status: false
-            //     },
-            //     {
-            //         key:'2',
-            //         position:'Nhà kho B',
-            //         description: 'Giam doc dieu khien',
-            //         name:'CORONA',
-            //         status: true
-            //     },
-            //     {
-            //         key:'3',
-            //         position:'Nhà kho B',
-            //         description: 'Giam doc dieu khien',
-            //         name:'CORONA',
-            //         status: true
-            //     },
             //     {
             //         key:'4',
             //         position:'Nhà kho B',
@@ -73,7 +50,6 @@ class MachineTable extends Component {
                 </Breadcrumb>
                 <div className="site-layout-background" style={{ padding: 24, minHeight: 360, display: 'flex',flexWrap: 'wrap' }}>
                     {this.state.data.map((item)=>
-
                         <div key={item.key.toString()}  style={{backgroundColor: '#f1f1f1', width:'30%', margin:'22px', textAlign: 'center', lineHeight:'75px', fontSize:'30px'}}>
                         <div style={{fontSize: "35px"}}>{item.name}</div>
                         {this.showStatusMachine(item.status)}
@@ -85,13 +61,9 @@ class MachineTable extends Component {
                                 <Button type='link' danger style={{fontSize: '35px'}}>
                                     Delete
                                 </Button>
-                            
-
+                        </div>
                     </div>
-                    </div>
-                    
                     )}
-                    
                 </div>
             </Content>
         );

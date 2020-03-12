@@ -14,3 +14,18 @@ export const getAllMachines = user => {
             console.log(err);
         })
 }
+
+export const register = machine =>{
+    return axios
+        .post('/machines/register',{
+            name: machine.name,
+            position:machine.position,
+            discription: machine.discription,
+        })
+        .then(response=>{
+            console.log('Registerd');
+            return response.data;
+        }).catch(err=>{
+            return err
+        })
+}
