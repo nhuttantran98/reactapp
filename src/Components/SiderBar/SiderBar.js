@@ -24,9 +24,9 @@ class SiderBar extends Component {
     render() {
         return (
             <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
-          <div className="logo" style={{minHeight:'60px'}}>
+          <div className="logo" style={{minHeight:'60px',textAlign:'center',paddingTop:'15px'}}>
             <Avatar style={{ float: 'left' }} src='./logo512.png' ></Avatar>
-            <Title style={{ color: 'white' }} level={3}>SHRIDEEP</Title>
+            <Title style={{ color: 'white' }} level={3}>HCMUT Dryer</Title>
           </div>
           
           <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">

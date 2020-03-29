@@ -27,7 +27,7 @@ class Navbar extends Component {
     )
     render() {
         return (
-            <div>
+            <div style={{height:'100%'}}>
                 {localStorage.usertoken ? this.userLink : this.loginRegLink}
             </div>
         );
