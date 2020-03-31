@@ -15,10 +15,13 @@ import EditUser from '../UserPage/EditUser/EditUser';
 import MachineTable from '../MachinePage/MachineTable/MachineTable';
 import MachineAdd from '../MachinePage/MachineAdd/MachineAdd';
 import MachineEdit from '../MachinePage/MachineEdit/MachineEdit';
-import socketIOClient from 'socket.io-client';
+// import socketIOClient from 'socket.io-client';
 
 class RouterURL extends Component {
    
+//    addSocket = () => {  
+//        this.socket = socketIOClient("localhost:5555")
+//    }
     render() {  
         return (
                 <div>

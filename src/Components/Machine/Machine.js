@@ -117,7 +117,10 @@ class Machine extends Component {
         this.socket.on('server-send-ack',this.getAckServer);
         this.socket.on('server-send-data',this.getDataServer)
     }
-
+    componentWillUnmount = () => {
+        this.socket.close();
+        console.log("socket close")
+    }
     onChangeTempValue = value => {
         this.setState({
             dataControl:{
