@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Row, Col, Slider, Select, Button } from 'antd';
 import ChartMachine from './ChartMachine/ChartMachine';
+import ChartMachineBar from './ChartMachineBar/ChartMachineBar';
+
 import './Machine.css';
 import Device from './Device/Device';
 import socketIOClient from 'socket.io-client';
@@ -44,6 +46,7 @@ class Machine extends Component {
         super(props);
         const endpoint = "localhost:5555";
         this.state = {
+            dataLineChart:[],
             dataControl:{
                 tempValue: 100,
                 humidValue: 100,
@@ -89,21 +92,30 @@ class Machine extends Component {
             ]
         }
         this.socket = socketIOClient(endpoint);
-
+        
     }
-
+    dataChart=[];
     send = () => {
         console.log("Sent!!!!")
-        this.socket.emit('client-send-control', this.state.dataDevice) // change 'red' to this.state.color
+        this.socket.emit('client-send-control', this.state.dataDevice) 
     }
-    getDataServer = value => {
-        console.log("Data from server "+JSON.stringify(value));
+    getAckServer = value => {
+        console.log("Ack from server "+JSON.stringify(value));
         this.setState({
             dataDevice: value
         })
     }
+    getDataServer = value => {
+        this.dataChart.push(value)
+        if(this.dataChart.length > 15) this.dataChart.shift();
+        console.log(this.dataChart);
+        this.setState({
+            dataLineChart:this.dataChart,
+        })
+    }
     componentDidMount = () => {
-        this.socket.on('server-send-ack',this.getDataServer)
+        this.socket.on('server-send-ack',this.getAckServer);
+        this.socket.on('server-send-data',this.getDataServer)
     }
 
     onChangeTempValue = value => {
@@ -164,10 +176,10 @@ class Machine extends Component {
                     <Col span={12}>
                         <div style={{ minHeight: '400px', margin: '20px', background: 'white' }}>
                             <Row>
-                                <ChartMachine></ChartMachine>
+                                <ChartMachine data={this.state.dataLineChart}></ChartMachine>
                             </Row>
                             <Row>
-                                <ChartMachine></ChartMachine>
+                                <ChartMachineBar data={this.state.dataLineChart}></ChartMachineBar>
                             </Row>
 
                         </div>

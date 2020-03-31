@@ -14,20 +14,20 @@ class ChartMachine extends Component {
   }
   componentDidMount() {
     this.myChart = new Chart(this.chartRef.current, {
-      type: 'line',
+      type: 'bar',
       data: {
         datasets: [{
-          label: 'Temperature',
+          label: 'Humidity',
           data: [],
           fill: false,
           lineTension: 0.2,
-          borderColor: 'red',
+          borderColor: 'blue',
           borderWidth: 1,
         }]
       },
       options: {
         title: {
-          text: 'Temperature Chart',
+          text: 'Humidity Chart',
           display: true
         },
         scales: {

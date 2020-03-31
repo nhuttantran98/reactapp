@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router'
 import {
-    // BrowserRouter as Router,
     Route,
     Switch,
   } from "react-router-dom";
@@ -15,7 +15,10 @@ import EditUser from '../UserPage/EditUser/EditUser';
 import MachineTable from '../MachinePage/MachineTable/MachineTable';
 import MachineAdd from '../MachinePage/MachineAdd/MachineAdd';
 import MachineEdit from '../MachinePage/MachineEdit/MachineEdit';
+import socketIOClient from 'socket.io-client';
+
 class RouterURL extends Component {
+   
     render() {  
         return (
                 <div>
@@ -40,4 +43,4 @@ class RouterURL extends Component {
 }
 
 
-export default RouterURL;
+export default withRouter(RouterURL);

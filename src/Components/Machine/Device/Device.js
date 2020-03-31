@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Avatar, Switch } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+import { AlertOutlined } from '@ant-design/icons';
 class Device extends Component {
 
     constructor(props){
@@ -13,11 +13,11 @@ class Device extends Component {
     preStatus=this.props.status;
 
     renderOn(){
-        return <Avatar size={100} icon={<UserOutlined />} style={{ backgroundColor: '#87d068' }}></Avatar>
+        return <Avatar size={100} icon={<AlertOutlined />} style={{ backgroundColor: '#87d068' }}></Avatar>
     }
 
     renderOff(){
-        return  <Avatar size={100} icon={<UserOutlined />} ></Avatar>
+        return  <Avatar size={100} icon={<AlertOutlined />} ></Avatar>
     }
 
     showStatus(){
