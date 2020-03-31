@@ -14,7 +14,7 @@ class Login extends Component {
         login({email:values.username,password:values.password}).then(res=>{
             if(res){
                 auth.login(()=>{
-                    this.props.history.push(`/may-a`);
+                    this.props.history.push(`/all-user`);
                 })
             }else{
                 swal({

@@ -188,12 +188,17 @@ class Machine extends Component {
                         </div>
                     </Col>
                     <Col span={12}>
-                        <div style={{ margin: '20px', background: 'white',display:'flex',flexWrap:'wrap' }}>
+                        
+                        <div style={{ margin: '20px', background: 'white' }}>
+                            <div style={{fontSize:'50px',textAlign:'center'}}>{this.props.location.aboutProps.name}</div>
+                            <div style={{display:'flex',flexWrap:'wrap'}}>
                             {this.state.dataDevice.map((item) =>
                                 <div key={item.id} style={{width:'50%'}}>
                                     <Device status={item.status} id={item.id} changeStatus={this.changeStatus.bind(this)}>{item.title}</Device>
                                 </div>
                             )}
+                            </div>
+                            
                         </div>
 
                         <div style={{ margin: '20px', background: 'white', padding: '20px' }}>
