@@ -13,7 +13,7 @@ const protectedRoute = ({component: Component, ...rest}) =>{
             }else{
                 swal({
                     title: "Oppss...!",
-                    text: "Bỏ ra bạn ơi!",
+                    text: "Vui lòng đăng nhập để sử dụng chức năng này!",
                     icon: "error",
                     button: "OK",
                     

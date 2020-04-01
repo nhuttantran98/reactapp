@@ -15,6 +15,7 @@ import MachineTable from '../MachinePage/MachineTable/MachineTable';
 import MachineAdd from '../MachinePage/MachineAdd/MachineAdd';
 import MachineEdit from '../MachinePage/MachineEdit/MachineEdit';
 import page404 from '../page404/page404';
+import DataStatitics from '../DataStatitics/DataStatitics';
 
 class RouterURL extends Component {
 
@@ -23,6 +24,7 @@ class RouterURL extends Component {
                 <div>
                     <Switch>
                         <Route  exact path="/" component={Login}/>
+                        <ProtectedRoute  path="/data-statistics" component={DataStatitics}/>
                         <ProtectedRoute  path="/all-user" component={UserTable}/>
                         <ProtectedRoute  path="/add-user" component={UserAddAccount}/>
                         <ProtectedRoute  path="/all-machine" component={MachineTable}/>

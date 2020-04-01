@@ -25,6 +25,7 @@ export const login = user => {
             password:user.password
         })
         .then(response=>{
+            localStorage.setItem('useremail',user.email)
             localStorage.setItem('usertoken',response.data);
             return response.data;
         })
@@ -48,9 +49,10 @@ export const getAllUsers = user => {
         })
 }
 
-export const getProfileUser = id => {
+export const getProfileUser = email => {
+    console.log("getProfile "+ JSON.stringify(email))
     return axios
-        .post('/users/profile',{id: id},{
+        .post('/users/profile',{email: email},{
             headers:{
                 'authorization' : localStorage.getItem('usertoken')
             }
@@ -86,7 +88,7 @@ export const updateUser = user =>{
 export const deleteUser = user =>{
     return axios
         .post('/users/delete-user',{
-            id: user.id,
+            email: user.email,
         })
         .then(response=>{
             console.log(response);

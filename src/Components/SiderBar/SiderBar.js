@@ -33,7 +33,7 @@ class SiderBar extends Component {
             <Menu.Item key="1">
               <PieChartOutlined />
               <span>Thống kê dữ liệu</span>
-                <Link to="/"></Link>
+                <Link to="/data-statistics"></Link>
             </Menu.Item>
             <Menu.Item key="2">
               <DesktopOutlined />

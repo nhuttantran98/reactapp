@@ -178,10 +178,10 @@ class Machine extends Component {
                 <Row>
                     <Col span={12}>
                         <div style={{ minHeight: '400px', margin: '20px', background: 'white' }}>
-                            <Row>
+                            <Row style={{paddingTop:'20px'}}>
                                 <ChartMachine data={this.state.dataLineChart}></ChartMachine>
                             </Row>
-                            <Row>
+                            <Row style={{paddingTop:'20px'}}>
                                 <ChartMachineBar data={this.state.dataLineChart}></ChartMachineBar>
                             </Row>
 

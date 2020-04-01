@@ -39,7 +39,7 @@ class UserAddAccount extends Component {
                     icon: "success",
                     button: "OK",
                   });
-                  this.props.history.push(`/may-a`);
+                  this.props.history.push(`/all-user`);
             }
         })
         console.log(result);

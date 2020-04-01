@@ -25,9 +25,9 @@ class UserTable extends Component {
         })
     }
 
-    deleteUser = key=> {
-        deleteUser({id:key}).then(res=>{
-            console.log(key);
+    deleteUser = email=> {
+        deleteUser({email:email}).then(res=>{
+            console.log(email);
             if(res.error){
                 swal({
                     title: "Oppss...!",
@@ -37,7 +37,7 @@ class UserTable extends Component {
                   });
             }else{
 
-                let tempData = this.state.data.filter(item => item.key !== key)
+                let tempData = this.state.data.filter(item => item.email !== email)
                 console.log(tempData);
                 this.setState({
                     data: tempData
@@ -57,9 +57,9 @@ class UserTable extends Component {
         return (
             <Content style={{ margin: '0 16px' }}>
                 <Breadcrumb style={{ margin: '16px 0' }}>
-              <Breadcrumb.Item>User</Breadcrumb.Item>
-              <Breadcrumb.Item>Bill</Breadcrumb.Item>
-            </Breadcrumb>
+                    <Breadcrumb.Item></Breadcrumb.Item>
+                    <Breadcrumb.Item></Breadcrumb.Item>
+                </Breadcrumb>
                 <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
                 <Table dataSource={this.state.data}>
                 <ColumnGroup title="Full Name">
@@ -80,19 +80,19 @@ class UserTable extends Component {
                 <Column
                     title="Action"
                     key="action"
-                    dataIndex="key"
-                    render={key => (
+                    dataIndex="email"
+                    render={email => (
                         <span>
                             <Button type="link" >
                                 {/* <Link to ={`/edit-user/${key}`} >Edit</Link> */}
                                 <Link to={{
                                     pathname:'/edit-user',
                                     aboutProps:{
-                                        id:`${key}`
+                                        email:`${email}`
                                     }
                                 }}>Edit</Link>
                             </Button>
-                            <Button type="link" danger onClick={()=>this.deleteUser(key)}>
+                            <Button type="link" danger onClick={()=>this.deleteUser(email)}>
                                 Delete
                             </Button>
                         </span>

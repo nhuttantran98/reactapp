@@ -16,14 +16,13 @@ class EditUser extends Component {
         super(props);
         this.state={
             dob:"1900/12/12",
-            id: "-1"
+            id: "-1",
         }
     }
     
 
     async componentDidMount(){
-        const user = await getProfileUser({id:this.props.location.aboutProps.id});
-        console.log(user);
+        const user = await getProfileUser({email:this.props.location.aboutProps.email});
         if(user){
             this.formRef.current.setFieldsValue({
                 email: user.email,
@@ -55,6 +54,7 @@ class EditUser extends Component {
                     icon: "success",
                     button: "OK",
                 });
+                
             }else{
                 swal({
                     title: "Opposss...!",
@@ -80,7 +80,7 @@ class EditUser extends Component {
 
 
     render() {
-        console.log("render");
+        
         return (
             <div style={{margin:'60px', background:'white'}}>
                 <h1 style={{margin:'25px',fontSize:'45px'}}>Thông tin tài khoản</h1>

@@ -50,7 +50,7 @@ class Device extends Component {
     render() {
         
         return (
-            <div style={{margin:'60px',background: '#ececec', padding:'20px 0px'}} >
+            <div style={{margin:'35px',background: '#ececec', padding:'40px 0px'}} >
                 <div style={{width:'100%',display:'flex'}}>
                     <div style={{width:'20%'}}><Switch checked={this.props.status} onClick={()=> {this.props.changeStatus(this.props.id,this.props.status);this.changeIsChange()}}/></div>
                     <div style={{width:'60%',textAlign:'center',fontSize:'25px',fontFamily:'monospace',fontWeight:'bold'}} >{this.props.children}</div>
