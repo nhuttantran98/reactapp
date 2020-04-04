@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Row, Col, Slider, Select, Button } from 'antd';
 import ChartMachine from './ChartMachine/ChartMachine';
 import ChartMachineBar from './ChartMachineBar/ChartMachineBar';
+import {addSetup} from './../MachineFunction/MachineFunction'
 
 import './Machine.css';
 import Device from './Device/Device';
@@ -95,10 +96,7 @@ class Machine extends Component {
         
     }
     dataChart=[];
-    send = () => {
-        console.log("Sent!!!!")
-        this.socket.emit('client-send-control', this.state.dataDevice) 
-    }
+    
     getAckServer = value => {
         console.log("Ack from server "+JSON.stringify(value));
         this.setState({
@@ -148,9 +146,28 @@ class Machine extends Component {
         })
     }
 
+    send = () => {
+        console.log("Sent!!!!")
+        this.socket.emit('client-send-control', this.state.dataDevice) 
+    }
+
     onClickSendConfig(){
-        console.log(this.state)
-        this.send();
+        const setup={
+            user_email:localStorage.getItem('useremail'),
+            machine_name: this.props.location.aboutProps.name,
+            mass: this.state.dataControl.massValue,
+            temperature:this.state.dataControl.tempValue,
+            humidity:this.state.dataControl.humidValue,
+            typeOfFruit:this.state.dataControl.selectedFruit,
+            timeStart: new Date().toString().slice(0,24),
+            timeFinish: new Date().toString().slice(0,24)
+        }
+        console.log("data setup " + JSON.stringify(setup))
+        addSetup(setup).then(res=>{
+            console.log(res)
+        }).catch(err=>{
+            console.log(err)
+        })
     }
 
     onChangeSelect = value => {

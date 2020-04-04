@@ -24,7 +24,7 @@ class RouterURL extends Component {
                 <div>
                     <Switch>
                         <Route  exact path="/" component={Login}/>
-                        <ProtectedRoute  path="/data-statistics" component={DataStatitics}/>
+                        <Route  path="/data-statistics" component={DataStatitics}/>
                         <ProtectedRoute  path="/all-user" component={UserTable}/>
                         <ProtectedRoute  path="/add-user" component={UserAddAccount}/>
                         <ProtectedRoute  path="/all-machine" component={MachineTable}/>
