@@ -54,7 +54,9 @@ class Machine extends Component {
             timeActive:false,
             timeFinish:0,
             isChooseScript: true,
-            newScript:'',
+            newScriptName:'',
+            flagTime:false,
+            standardTime:0,
             dataLineChart:[],
             dataControl:{
                 tempValue: 100,
@@ -62,6 +64,7 @@ class Machine extends Component {
                 massValue: 100,  	
                 selectedFruit:'Banana'
             },
+            dataNewScript:[],
             typeOfFruit: [
                 {
                     id: 1,
@@ -162,9 +165,36 @@ class Machine extends Component {
         })
     }
 
-    send = () => {
-        console.log("Sent!!!!")
-        this.socket.emit('client-send-control', this.state.dataDevice) 
+    async send(){
+        console.log("Sent!!!!"+JSON.stringify(this.state.dataDevice));
+        this.socket.emit('client-send-control', this.state.dataDevice);
+        let temp='';
+        await this.state.dataDevice.forEach(e=>{
+            temp=temp+Number(e.status);
+        })
+        if(this.state.flagTime===false){
+            let obj={time:0,stt:temp}
+            this.setState({
+                flagTime:true,
+                standardTime: Date.now(),
+            })
+            this.setState(prevState => ({
+                dataNewScript: [...prevState.dataNewScript, obj]
+            }))
+        }else{
+            let myTime = Date.now()-this.state.standardTime;
+            let obj={time:myTime,stt:temp};
+            this.setState(prevState => ({
+                dataNewScript: [...prevState.dataNewScript, obj]
+            }))
+        }
+    }
+
+    finish(){
+        let totalTime=0;
+        this.state.dataNewScript.forEach(el=>{totalTime=totalTime+el.time})
+        let obj =  {title:this.state.newScriptName,data:this.state.dataNewScript,totalTime:totalTime};
+        console.log(obj)
     }
 
     onClickSendConfig(){
@@ -249,16 +279,16 @@ class Machine extends Component {
                             <div style={{width:'50%'}}>
                                 <h4 style={{fontSize:'25px'}}>
                                     Điều khiển máy sấy theo kịch bản 
-            <span style={{textTransform: 'uppercase'}}>&nbsp; {this.state.newScript}</span>
+            <span style={{textTransform: 'uppercase'}}>&nbsp; {this.state.newScriptName}</span>
                                 </h4>
                             </div>
                             <div style={{width:'25%',textAlign:'center'}}>
-                                <Button shape="circle" type="primary" style={{ fontSize: '25px', height:'85px', width:'85px',fontWeight:'bold' }} onClick={()=>this.onClickSendConfig()}>
+                                <Button shape="circle" type="primary" style={{ fontSize: '25px', height:'85px', width:'85px',fontWeight:'bold' }} onClick={()=>this.send()}>
                                     SEND
                                 </Button>
                             </div>
                             <div style={{width:'25%',fontSize:'45px'}}>
-                                <Button danger  style={{ fontSize: '25px', height:'85px', width:'125px',fontWeight:'bold' }} onClick={()=>this.onClickSendConfig()}>
+                                <Button danger  style={{ fontSize: '25px', height:'85px', width:'125px',fontWeight:'bold' }} onClick={()=>this.finish()}>
                                     FINISH
                                 </Button>
                             </div>
@@ -341,7 +371,7 @@ class Machine extends Component {
             }
             this.setState({
                 isChooseScript: false,
-                newScript: value
+                newScriptName: value
             })
           });
         

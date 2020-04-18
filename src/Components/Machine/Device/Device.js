@@ -41,8 +41,6 @@ class Device extends Component {
         }
     }
 
-    
-
     changeIsChange = ()=>{
         this.isChange=!this.isChange
     }
