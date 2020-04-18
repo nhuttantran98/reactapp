@@ -112,6 +112,21 @@ export const getAllSetups = setup => {
         })
 }
 
+export const getAllScripts = scripts => {
+    return axios
+        .get('/scripts/get-all-scripts',{
+            headers:{
+                'authorization' : localStorage.getItem('usertoken')
+            }
+        })
+        .then(response=>{
+            return response.data;
+        })
+        .catch(err=>{
+            console.log(err);
+        })
+}
+
 export const updateResult = setup => {
     return axios
         .post('/setups/update-setups',{

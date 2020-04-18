@@ -39,19 +39,29 @@ class DataStatitics extends Component {
     }
 
     handleOnRowClick = (record,index) => {
-        swal("Đánh giá kết quả: GOOD, MEDIUM or BAD", {
-            content: "input",
-            icon: 'info'
-        })
-        .then((value) => {
-            let dataUpdateResult = {id: record.key,result:value};
-            this.dataResult.push(dataUpdateResult);
-            this.setState(preState => {
-            const newItems = [...preState.data];
-            newItems[index].result=value;
-            return {data: newItems};
-        })
-          });
+        if(record.user_email===localStorage.getItem('useremail')){
+            swal("Đánh giá kết quả: GOOD, MEDIUM or BAD", {
+                content: "input",
+                icon: 'info'
+            })
+            .then((value) => {
+                let dataUpdateResult = {id: record.key,result:value};
+                this.dataResult.push(dataUpdateResult);
+                this.setState(preState => {
+                const newItems = [...preState.data];
+                newItems[index].result=value;
+                return {data: newItems};
+            })
+              });
+        }else{
+            swal({
+                title: "Oppss...!",
+                text: "Bạn không được cấp quyền đánh giá kết quả!",
+                icon: "warning",
+                button: "OK",
+              });
+        }
+        
         
     }
     

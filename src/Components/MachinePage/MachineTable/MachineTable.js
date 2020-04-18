@@ -111,7 +111,7 @@ class MachineTable extends Component {
                 <div className="site-layout-background" style={{ padding: 24, minHeight: 360, display: 'flex',flexWrap: 'wrap' }}>
                     {this.state.data.map((item)=>
                         <div key={item.key.toString()}  style={{backgroundColor: '#f1f1f1', width:'30%', margin:'22px', textAlign: 'center', lineHeight:'75px', fontSize:'30px'}}>
-                        <Link to={{pathname:'/machine/'+this.to_slug(item.name),aboutProps:{name:`${item.name}`}}}><div style={{fontSize: "35px"}} >{item.name}</div></Link>
+                        <Link to={{pathname:'/all-machine/'+this.to_slug(item.name),aboutProps:{name:`${item.name}`}}}><div style={{fontSize: "35px"}} >{item.name}</div></Link>
                         {this.showStatusMachine(item.status)}
                         <div>{item.position}</div>
                         <div>

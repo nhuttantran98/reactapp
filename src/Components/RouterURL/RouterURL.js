@@ -27,8 +27,8 @@ class RouterURL extends Component {
                         <Route  path="/data-statistics" component={DataStatitics}/>
                         <ProtectedRoute  path="/all-user" component={UserTable}/>
                         <ProtectedRoute  path="/add-user" component={UserAddAccount}/>
-                        <ProtectedRoute  path="/all-machine" component={MachineTable}/>
-                        <ProtectedRoute  path="/machine/:name" component={Machine}/>
+                        <Route  exact path="/all-machine" component={MachineTable}/>
+                        <Route  path="/all-machine/:name" component={Machine}/>
                         <ProtectedRoute  path="/edit-user" component={EditUser}/>
                         <ProtectedRoute  path="/edit-machine" component={MachineEdit}/>
                         <ProtectedRoute  path="/add-machine" component={MachineAdd}/>

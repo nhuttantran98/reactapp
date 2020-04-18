@@ -1,15 +1,15 @@
 class Auth{
     constructor(){
-        this.authenticate = false;
+        this.authenticate = '';
     }
 
     login(cb){
-        this.authenticate = true;
+        this.authenticate = localStorage.getItem('usertoken');
         cb();
     }
 
     logout(cb){
-        this.authenticate = false;
+        this.authenticate = '';
         cb();
     }
 
