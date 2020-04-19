@@ -9,8 +9,8 @@ class Device extends Component {
             status: this.props.status,
         };
     }
-    isChange=false;
-    preStatus=this.props.status;
+    isChange=true;
+    lightStatus=this.props.status;
 
     renderOn(){
         return <Avatar size={100} icon={<AlertOutlined />} style={{ backgroundColor: '#87d068' }}></Avatar>
@@ -21,9 +21,8 @@ class Device extends Component {
     }
 
     showStatus(){
-        if(this.isChange===true){
-            this.isChange=false;
-            if(this.preStatus === true) {
+        if(this.props.isChange===false){
+            if(this.lightStatus === true) {
                 return this.renderOn();
             }
             else {
@@ -31,7 +30,7 @@ class Device extends Component {
             }
         }
         else{
-            this.preStatus=this.props.status;
+            this.lightStatus=this.props.status;
             if(this.props.status === true) {
                 return this.renderOn();
             }
@@ -41,16 +40,11 @@ class Device extends Component {
         }
     }
 
-    changeIsChange = ()=>{
-        this.isChange=!this.isChange
-    }
-
     render() {
-        
         return (
             <div style={{margin:'35px',background: '#ececec', padding:'40px 0px'}} >
                 <div style={{width:'100%',display:'flex'}}>
-                    <div style={{width:'20%'}}><Switch checked={this.props.status} onClick={()=> {this.props.changeStatus(this.props.id,this.props.status);this.changeIsChange()}}/></div>
+                    <div style={{width:'20%'}}><Switch checked={this.props.status} onClick={()=> {this.props.changeStatus(this.props.id,this.props.status)}}/></div>
                     <div style={{width:'60%',textAlign:'center',fontSize:'25px',fontFamily:'monospace',fontWeight:'bold'}} >{this.props.children}</div>
                     <div style={{width:'20%'}}></div>
                 </div>

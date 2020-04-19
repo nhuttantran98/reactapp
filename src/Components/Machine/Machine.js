@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Row, Col, Slider, Select, Button } from 'antd';
 import ChartMachine from './ChartMachine/ChartMachine';
 import ChartMachineBar from './ChartMachineBar/ChartMachineBar';
-import {addSetup,getAllScripts} from './../MachineFunction/MachineFunction';
+import {addSetup,getAllScripts,addScript} from './../MachineFunction/MachineFunction';
 
 import swal from '@sweetalert/with-react'
 
@@ -53,6 +53,7 @@ class Machine extends Component {
         this.state = {
             timeActive:false,
             timeFinish:0,
+            isChange:true,
             isChooseScript: true,
             newScriptName:'',
             flagTime:false,
@@ -105,14 +106,15 @@ class Machine extends Component {
             ]
         }
         this.socket = socketIOClient(endpoint);
-        
     }
     dataChart=[];
+    
 
     getAckServer = value => {
         console.log("Ack from server "+JSON.stringify(value));
         this.setState({
-            dataDevice: value
+            dataDevice: value,
+            isChange:true
         })
     }
     getDataServer = value => {
@@ -177,24 +179,39 @@ class Machine extends Component {
             this.setState({
                 flagTime:true,
                 standardTime: Date.now(),
+               
             })
             this.setState(prevState => ({
-                dataNewScript: [...prevState.dataNewScript, obj]
+                dataNewScript: [...prevState.dataNewScript, obj],
             }))
+            this.isChange=false;
         }else{
             let myTime = Date.now()-this.state.standardTime;
             let obj={time:myTime,stt:temp};
             this.setState(prevState => ({
-                dataNewScript: [...prevState.dataNewScript, obj]
+                dataNewScript: [...prevState.dataNewScript, obj],
+                
             }))
+            this.isChange=false;
+
         }
     }
 
-    finish(){
-        let totalTime=0;
-        this.state.dataNewScript.forEach(el=>{totalTime=totalTime+el.time})
-        let obj =  {title:this.state.newScriptName,data:this.state.dataNewScript,totalTime:totalTime};
-        console.log(obj)
+    async finish(){
+        
+        let myTime = Date.now() - this.state.standardTime;
+        let obj = {time: myTime,stt:'0000'}
+        await this.setState(prevState => ({
+            dataNewScript: [...prevState.dataNewScript, obj]
+        }))
+        let result =  {name:this.state.newScriptName,script:this.state.dataNewScript,totalTime:myTime};
+        this.state.listScript.push(result);
+        console.log(result)
+        addScript(result).then(res=>{
+            console.log(res)
+        }).catch(err=>{
+            console.log(err)
+        })
     }
 
     onClickSendConfig(){
@@ -246,7 +263,12 @@ class Machine extends Component {
             else newItems[id-1].status=true;
             return {dataDevice: newItems};
         })
+        this.setState({
+            isChange:false
+        })
     }
+
+    
 
     renderTimeActive(){
         let temp = new Date().getTime();
@@ -299,7 +321,7 @@ class Machine extends Component {
                     <div style={{display:'flex',flexWrap:'wrap'}}>
                     {this.state.dataDevice.map((item) =>
                         <div key={item.id} style={{width:'50%'}}>
-                            <Device status={item.status} id={item.id} changeStatus={this.changeStatus.bind(this)}>{item.title}</Device>
+                            <Device isChange={this.state.isChange} status={item.status} id={item.id} changeStatus={this.changeStatus.bind(this)}>{item.title}</Device>
                         </div>
                     )}
                     </div>

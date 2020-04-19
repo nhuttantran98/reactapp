@@ -112,6 +112,24 @@ export const getAllSetups = setup => {
         })
 }
 
+export const addScript = script => {
+    let myScript = JSON.stringify(script.script);
+    return axios
+        .post('/scripts/add-script',{
+            name: script.name,
+            script: myScript,
+            totalTime: script.totalTime
+        })
+        .then(response=>{
+            console.log(response);
+            return response.data;
+        }).catch(err=>{
+            console.log(err);
+            return err;
+        })
+    
+}
+
 export const getAllScripts = scripts => {
     return axios
         .get('/scripts/get-all-scripts',{
