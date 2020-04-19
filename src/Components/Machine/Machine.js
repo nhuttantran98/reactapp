@@ -82,6 +82,7 @@ class Machine extends Component {
                 }
             ],
             listScript:[],
+            choosenScript:'',
             dataDevice:[
                 {
                     id: 1,
@@ -120,7 +121,7 @@ class Machine extends Component {
     getDataServer = value => {
         this.dataChart.push(value)
         if(this.dataChart.length > 15) this.dataChart.shift();
-        console.log(this.dataChart);
+        // console.log(this.dataChart);
         this.setState({
             dataLineChart:this.dataChart,
         })
@@ -179,34 +180,49 @@ class Machine extends Component {
             this.setState({
                 flagTime:true,
                 standardTime: Date.now(),
-               
+                
             })
             this.setState(prevState => ({
                 dataNewScript: [...prevState.dataNewScript, obj],
             }))
-            this.isChange=false;
+            
         }else{
             let myTime = Date.now()-this.state.standardTime;
             let obj={time:myTime,stt:temp};
             this.setState(prevState => ({
                 dataNewScript: [...prevState.dataNewScript, obj],
-                
+                standardTime:Date.now()
             }))
-            this.isChange=false;
+            
 
         }
+        console.log(this.state.dataNewScript);
     }
 
     async finish(){
+        await this.setState(preState => {
+            let newItems = [...preState.dataDevice];
+            newItems.forEach(e=>{e.status=false});
+            return {dataDevice: newItems};
+        })
+        this.setState({
+            isChange:false,
+            flagTime:false
+        })
+        this.socket.emit('client-send-control', this.state.dataDevice);
         
         let myTime = Date.now() - this.state.standardTime;
         let obj = {time: myTime,stt:'0000'}
         await this.setState(prevState => ({
             dataNewScript: [...prevState.dataNewScript, obj]
         }))
-        let result =  {name:this.state.newScriptName,script:this.state.dataNewScript,totalTime:myTime};
+        
+        let totalTime = 0;
+        for(let i=0;i<this.state.dataNewScript.length;i++){
+            totalTime=totalTime+this.state.dataNewScript[i].time
+        }
+        let result =  {name:this.state.newScriptName,script:this.state.dataNewScript,totalTime:totalTime};
         this.state.listScript.push(result);
-        console.log(result)
         addScript(result).then(res=>{
             console.log(res)
         }).catch(err=>{
@@ -233,10 +249,46 @@ class Machine extends Component {
         })
     }
 
-    onClickStartScript = () => {
+    waitFor = (sttStr,ms) => new Promise(r => {
+        let sttArr = sttStr.split('')
+        let deviceArr = this.state.dataDevice
+        deviceArr.forEach((ele,idx)=>{
+            ele.status = Boolean(Number(sttArr[idx]));
+        })
+        this.setState({
+            dataDevice:deviceArr,
+            isChange:false
+        })
+        this.socket.emit('client-send-control', this.state.dataDevice);
+        console.log(deviceArr);
+        setTimeout(r, ms)
+    })
+    asyncForEach = async (array, callback) => {
+        for (let index = 0; index < array.length; index++) {
+          await callback(array[index], index, array)
+        }
+    }
+
+    start = async (arr) => {
+        await this.asyncForEach(arr, async (element) => {
+          await this.waitFor(element.stt,element.time)
+          console.log(element)
+        })
+        console.log('Done')
+    }
+
+    onClickStartScript () {
         this.setState({
             timeActive:true
         })
+        let rs = JSON.parse(this.state.choosenScript);
+        for (let index = 0; index < rs.length; index++) {
+            if(index!==rs.length-1){
+                rs[index].time=rs[index+1].time
+            }else{rs[index].time=0}
+        }
+        console.log(this.state.choosenScript);
+        this.start(rs);       
     }
 
     onChangeSelect = value => {
@@ -249,9 +301,12 @@ class Machine extends Component {
     }
 
     onChangeSelectScript = value => {
+        let time = this.state.listScript[value].totalTime;
+        let script = this.state.listScript[value].script;
         this.setState({
-            timeFinish:value,
-            timeActive: false
+            timeFinish:time,
+            timeActive: false,
+            choosenScript: script
         })
 
     }
@@ -355,8 +410,8 @@ class Machine extends Component {
                             <div style={{width:'40%'}}>
                                 <h4 style={{fontSize:'25px'}}>Chọn kịch bản sấy</h4>
                                 <Select defaultValue="Hãy chọn kịch bản" style={{ width: 200, margin:'10px 0px' }} onChange={this.onChangeSelectScript}>
-                                    {this.state.listScript.map((item) =>
-                                        <Option key={item.name} value={item.totalTime}>{item.name}</Option>
+                                    {this.state.listScript.map((item,idx) =>
+                                        <Option key={item.name} choosenScript={item.script} value={idx}>{item.name}</Option>
                                     )}
                                 </Select>
                             </div>
@@ -373,7 +428,7 @@ class Machine extends Component {
                         <div style={{display:'flex',flexWrap:'wrap'}}>
                             {this.state.dataDevice.map((item) =>
                                 <div key={item.id} style={{width:'25%'}}>
-                                    <MiniDevice status={item.status} id={item.id} changeStatus={this.changeStatus.bind(this)}>{item.title}</MiniDevice>
+                                    <MiniDevice isChange={this.state.isChange} status={item.status} id={item.id} changeStatus={this.changeStatus.bind(this)}>{item.title}</MiniDevice>
                                 </div>
                             )}
                         </div>
@@ -387,7 +442,6 @@ class Machine extends Component {
             icon: 'info'
         })
         .then((value) => {
-            console.log(value)
             if(value===''){
                 return
             }

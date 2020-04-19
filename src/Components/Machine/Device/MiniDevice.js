@@ -9,8 +9,8 @@ class MiniDevice extends Component {
             status: this.props.status,
         };
     }
-    isChange=false;
-    preStatus=this.props.status;
+    isChange=true;
+    lightStatus=this.props.status;
 
     renderOn(){
         return <Avatar size={100} icon={<AlertOutlined />} style={{ backgroundColor: '#87d068' }}></Avatar>
@@ -21,9 +21,8 @@ class MiniDevice extends Component {
     }
 
     showStatus(){
-        if(this.isChange===true){
-            this.isChange=false;
-            if(this.preStatus === true) {
+        if(this.props.isChange===false){
+            if(this.lightStatus === true) {
                 return this.renderOn();
             }
             else {
@@ -31,7 +30,7 @@ class MiniDevice extends Component {
             }
         }
         else{
-            this.preStatus=this.props.status;
+            this.lightStatus=this.props.status;
             if(this.props.status === true) {
                 return this.renderOn();
             }
@@ -41,11 +40,6 @@ class MiniDevice extends Component {
         }
     }
 
-    
-
-    changeIsChange = ()=>{
-        this.isChange=!this.isChange
-    }
 
     render() {
         
