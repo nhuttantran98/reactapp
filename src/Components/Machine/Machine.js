@@ -53,10 +53,10 @@ class Machine extends Component {
         this.state = {
             timeActive:false,
             timeFinish:0,
-            isChange:true,
-            isChooseScript: true,
+            isChange:true, //To set change for device
+            isChooseScript: true, // To switch choose script and create script
             newScriptName:'',
-            flagTime:false,
+            flagTime:false, //To get standard time
             standardTime:0,
             dataLineChart:[],
             dataControl:{
@@ -200,15 +200,16 @@ class Machine extends Component {
     }
 
     async finish(){
+        this.setState({
+            isChange:false,
+            flagTime:false,
+        })
         await this.setState(preState => {
             let newItems = [...preState.dataDevice];
             newItems.forEach(e=>{e.status=false});
             return {dataDevice: newItems};
         })
-        this.setState({
-            isChange:false,
-            flagTime:false
-        })
+        
         this.socket.emit('client-send-control', this.state.dataDevice);
         
         let myTime = Date.now() - this.state.standardTime;
@@ -221,12 +222,22 @@ class Machine extends Component {
         for(let i=0;i<this.state.dataNewScript.length;i++){
             totalTime=totalTime+this.state.dataNewScript[i].time
         }
-        let result =  {name:this.state.newScriptName,script:this.state.dataNewScript,totalTime:totalTime};
-        this.state.listScript.push(result);
-        addScript(result).then(res=>{
+        let scriptStr = JSON.stringify(this.state.dataNewScript)
+        let resultForlistScript =  {name:this.state.newScriptName,script:scriptStr,totalTime:totalTime};
+        let resultForSubmit =  {name:this.state.newScriptName,script:this.state.dataNewScript,totalTime:totalTime};
+
+        await this.setState(prevState => ({
+            listScript: [...prevState.listScript, resultForlistScript]
+        }))
+        console.log(this.state.listScript)
+        // this.state.listScript.push(result);
+        addScript(resultForSubmit).then(res=>{
             console.log(res)
         }).catch(err=>{
             console.log(err)
+        })
+        this.setState({
+            dataNewScript:[],
         })
     }
 
@@ -260,7 +271,7 @@ class Machine extends Component {
             isChange:false
         })
         this.socket.emit('client-send-control', this.state.dataDevice);
-        console.log(deviceArr);
+        console.log("sent!!!");
         setTimeout(r, ms)
     })
     asyncForEach = async (array, callback) => {
@@ -272,7 +283,6 @@ class Machine extends Component {
     start = async (arr) => {
         await this.asyncForEach(arr, async (element) => {
           await this.waitFor(element.stt,element.time)
-          console.log(element)
         })
         console.log('Done')
     }
@@ -303,6 +313,7 @@ class Machine extends Component {
     onChangeSelectScript = value => {
         let time = this.state.listScript[value].totalTime;
         let script = this.state.listScript[value].script;
+        console.log(script)
         this.setState({
             timeFinish:time,
             timeActive: false,
