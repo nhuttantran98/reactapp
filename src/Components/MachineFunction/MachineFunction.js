@@ -118,7 +118,8 @@ export const addScript = script => {
         .post('/scripts/add-script',{
             name: script.name,
             script: myScript,
-            totalTime: script.totalTime
+            totalTime: script.totalTime,
+            useremail:script.useremail
         })
         .then(response=>{
             console.log(response);

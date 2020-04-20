@@ -38,7 +38,7 @@ class SiderBar extends Component {
             <Menu.Item key="2">
               <DesktopOutlined />
               <span>Công thức sấy</span>
-              <Link to="/1"></Link>
+              <Link to="/script"></Link>
             </Menu.Item>
             <SubMenu
               key="sub1"

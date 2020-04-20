@@ -52,6 +52,8 @@ class Machine extends Component {
         const endpoint = "localhost:5555";
         this.state = {
             timeActive:false,
+            timeStartActive:'',
+            timeFinishActive:'',
             timeFinish:0,
             isChange:true, //To set change for device
             isChooseScript: true, // To switch choose script and create script
@@ -224,7 +226,7 @@ class Machine extends Component {
         }
         let scriptStr = JSON.stringify(this.state.dataNewScript)
         let resultForlistScript =  {name:this.state.newScriptName,script:scriptStr,totalTime:totalTime};
-        let resultForSubmit =  {name:this.state.newScriptName,script:this.state.dataNewScript,totalTime:totalTime};
+        let resultForSubmit =  {name:this.state.newScriptName,script:this.state.dataNewScript,totalTime:totalTime,useremail:localStorage.getItem('useremail')};
 
         await this.setState(prevState => ({
             listScript: [...prevState.listScript, resultForlistScript]
@@ -288,8 +290,15 @@ class Machine extends Component {
     }
 
     onClickStartScript () {
+        
+        let temp = new Date().getTime();
+        let tempFinish = temp + this.state.timeFinish;
+        let timeStart = new Date(temp).toString();
+        let timeFinish = new Date(tempFinish).toString();
         this.setState({
-            timeActive:true
+            timeActive:true,
+            timeStartActive:timeStart,
+            timeFinishActive:timeFinish
         })
         let rs = JSON.parse(this.state.choosenScript);
         for (let index = 0; index < rs.length; index++) {
@@ -337,15 +346,15 @@ class Machine extends Component {
     
 
     renderTimeActive(){
-        let temp = new Date().getTime();
-        let tempFinish = temp + this.state.timeFinish;
-        let timeStart = new Date(temp);
-        let timeFinish = new Date(tempFinish);
+        // let temp = new Date().getTime();
+        // let tempFinish = temp + this.state.timeFinish;
+        // let timeStart = new Date(temp);
+        // let timeFinish = new Date(tempFinish);
         
         if(this.state.timeActive===true){
             return <div>
-                <h5 style={{fontSize:'20px'}}>Thời gian bắt đầu: {timeStart.toString().slice(16,24)}</h5>
-                <h5 style={{fontSize:'20px'}}>Thời gian kết thúc dự kiến: {timeFinish.toString().slice(16,24)}</h5>
+                <h5 style={{fontSize:'20px'}}>Thời gian bắt đầu: {this.state.timeStartActive.slice(16,24)}</h5>
+                <h5 style={{fontSize:'20px'}}>Thời gian kết thúc dự kiến: {this.state.timeFinishActive.slice(16,24)}</h5>
                 </div>
         }
     }
