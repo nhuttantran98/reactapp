@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Row, Col, Slider, Select, Button } from 'antd';
 import ChartMachine from './ChartMachine/ChartMachine';
 import ChartMachineBar from './ChartMachineBar/ChartMachineBar';
-import {addSetup,getAllScripts,addScript} from './../MachineFunction/MachineFunction';
+import {addSetup,getAllScripts,addScript,getDataDevice} from './../MachineFunction/MachineFunction';
 
 import swal from '@sweetalert/with-react'
 
@@ -57,7 +57,7 @@ class Machine extends Component {
             timeFinish:0,
             isChange:true, //To set change for device
             isChooseScript: true, // To switch choose script and create script
-            newScriptName:'',
+            // nameOfChoosenScript:'',
             flagTime:false, //To get standard time
             standardTime:0,
             dataLineChart:[],
@@ -85,27 +85,28 @@ class Machine extends Component {
             ],
             listScript:[],
             choosenScript:'',
+            nameOfChoosenScript:'',
             dataDevice:[
-                {
-                    id: 1,
-                    title: 'GIA NHIET 1',
-                    status: true
-                },
-                {
-                    id: 2,
-                    title: 'GIA NHIET 2',
-                    status: true
-                },
-                {
-                    id: 3,
-                    title: 'QUAT HUT',
-                    status: true
-                },
-                {
-                    id: 4,
-                    title: 'QUAT THOI',
-                    status: true
-                }
+                // {
+                //     id: 1,
+                //     title: 'GIA NHIET 1',
+                //     status: true
+                // },
+                // {
+                //     id: 2,
+                //     title: 'GIA NHIET 2',
+                //     status: true
+                // },
+                // {
+                //     id: 3,
+                //     title: 'QUAT HUT',
+                //     status: true
+                // },
+                // {
+                //     id: 4,
+                //     title: 'QUAT THOI',
+                //     status: true
+                // }
             ]
         }
         this.socket = socketIOClient(endpoint);
@@ -115,10 +116,13 @@ class Machine extends Component {
 
     getAckServer = value => {
         console.log("Ack from server "+JSON.stringify(value));
-        this.setState({
-            dataDevice: value,
-            isChange:true
-        })
+        if(this.props.location.aboutProps.name===value.machine){
+            this.setState({
+                dataDevice: value.data,
+                isChange:true
+            })
+        }
+        
     }
     getDataServer = value => {
         this.dataChart.push(value)
@@ -129,13 +133,16 @@ class Machine extends Component {
         })
     }
     async componentDidMount(){
+        
         this.socket.on('server-send-ack',this.getAckServer);
         this.socket.on('server-send-data',this.getDataServer);
         let allScripts = await getAllScripts();
+        let dataDevice = await getDataDevice(this.props.location.aboutProps.name)
+        let data = dataDevice.dataDevice;
         this.setState({
-            listScript:allScripts
+            listScript:allScripts,
+            dataDevice:data
         })
-        
     }
 
 
@@ -172,17 +179,20 @@ class Machine extends Component {
 
     async send(){
         console.log("Sent!!!!"+JSON.stringify(this.state.dataDevice));
-        this.socket.emit('client-send-control', this.state.dataDevice);
+        this.socket.emit('client-send-control', {machine:this.props.location.aboutProps.name,data: this.state.dataDevice});
         let temp='';
         await this.state.dataDevice.forEach(e=>{
             temp=temp+Number(e.status);
         })
+        let tempTime = new Date().getTime();
+        let timeStart = new Date(tempTime).toString();
+        
         if(this.state.flagTime===false){
             let obj={time:0,stt:temp}
             this.setState({
                 flagTime:true,
                 standardTime: Date.now(),
-                
+                timeStartActive:timeStart
             })
             this.setState(prevState => ({
                 dataNewScript: [...prevState.dataNewScript, obj],
@@ -202,15 +212,19 @@ class Machine extends Component {
     }
 
     async finish(){
+        let temp = new Date().getTime();
+        let timeFinish = new Date(temp).toString();
         this.setState({
             isChange:false,
             flagTime:false,
+            timeFinishActive:timeFinish
         })
         await this.setState(preState => {
             let newItems = [...preState.dataDevice];
             newItems.forEach(e=>{e.status=false});
             return {dataDevice: newItems};
         })
+        
         
         this.socket.emit('client-send-control', this.state.dataDevice);
         
@@ -225,8 +239,8 @@ class Machine extends Component {
             totalTime=totalTime+this.state.dataNewScript[i].time
         }
         let scriptStr = JSON.stringify(this.state.dataNewScript)
-        let resultForlistScript =  {name:this.state.newScriptName,script:scriptStr,totalTime:totalTime};
-        let resultForSubmit =  {name:this.state.newScriptName,script:this.state.dataNewScript,totalTime:totalTime,useremail:localStorage.getItem('useremail')};
+        let resultForlistScript =  {name:this.state.nameOfChoosenScript,script:scriptStr,totalTime:totalTime};
+        let resultForSubmit =  {name:this.state.nameOfChoosenScript,script:this.state.dataNewScript,totalTime:totalTime,useremail:localStorage.getItem('useremail')};
 
         await this.setState(prevState => ({
             listScript: [...prevState.listScript, resultForlistScript]
@@ -238,6 +252,7 @@ class Machine extends Component {
         }).catch(err=>{
             console.log(err)
         })
+        this.onClickSendConfig();
         this.setState({
             dataNewScript:[],
         })
@@ -248,11 +263,10 @@ class Machine extends Component {
             user_email:localStorage.getItem('useremail'),
             machine_name: this.props.location.aboutProps.name,
             mass: this.state.dataControl.massValue,
-            temperature:this.state.dataControl.tempValue,
-            humidity:this.state.dataControl.humidValue,
+            script:this.state.nameOfChoosenScript,
             typeOfFruit:this.state.dataControl.selectedFruit,
-            timeStart: new Date().toString().slice(0,24),
-            timeFinish: new Date().toString().slice(0,24)
+            timeStart: this.state.timeStartActive.slice(0,24),
+            timeFinish: this.state.timeFinishActive.slice(0,24)
         }
         console.log("data setup " + JSON.stringify(setup))
         addSetup(setup).then(res=>{
@@ -286,6 +300,7 @@ class Machine extends Component {
         await this.asyncForEach(arr, async (element) => {
           await this.waitFor(element.stt,element.time)
         })
+        await this.onClickSendConfig();
         console.log('Done')
     }
 
@@ -322,11 +337,13 @@ class Machine extends Component {
     onChangeSelectScript = value => {
         let time = this.state.listScript[value].totalTime;
         let script = this.state.listScript[value].script;
+        let name = this.state.listScript[value].name;
         console.log(script)
         this.setState({
             timeFinish:time,
             timeActive: false,
-            choosenScript: script
+            choosenScript: script,
+            nameOfChoosenScript: name
         })
 
     }
@@ -376,7 +393,7 @@ class Machine extends Component {
                             <div style={{width:'50%'}}>
                                 <h4 style={{fontSize:'25px'}}>
                                     Điều khiển máy sấy theo kịch bản 
-            <span style={{textTransform: 'uppercase'}}>&nbsp; {this.state.newScriptName}</span>
+            <span style={{textTransform: 'uppercase'}}>&nbsp; {this.state.nameOfChoosenScript}</span>
                                 </h4>
                             </div>
                             <div style={{width:'25%',textAlign:'center'}}>
@@ -467,7 +484,7 @@ class Machine extends Component {
             }
             this.setState({
                 isChooseScript: false,
-                newScriptName: value
+                nameOfChoosenScript: value
             })
           });
         

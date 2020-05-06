@@ -16,6 +16,8 @@ export const getAllMachines = user => {
         })
 }
 
+
+
 export const register = machine =>{
     return axios
         .post('/machines/register',{
@@ -25,6 +27,18 @@ export const register = machine =>{
         })
         .then(response=>{
             console.log('Registerd');
+            return response.data;
+        }).catch(err=>{
+            return err
+        })
+}
+
+export const getDataDevice = machineName => {
+    return axios
+        .post('/machines/get-data-device',{
+            name: machineName
+        })
+        .then(response=>{
             return response.data;
         }).catch(err=>{
             return err
@@ -85,8 +99,7 @@ export const addSetup = setup =>{
             typeOfFruit:setup.typeOfFruit,
             timeStart:setup.timeStart,
             timeFinish:setup.timeFinish,
-            temperature:setup.temperature,
-            humidity:setup.humidity
+            script:setup.script
         })
         .then(response=>{
             console.log(response);

@@ -3,7 +3,7 @@ import {Layout, Breadcrumb, Table, Button, Tag} from 'antd';
 import {getAllSetups, updateResult, getPDF} from './../MachineFunction/MachineFunction';
 import swal from '@sweetalert/with-react'
 const { Content } = Layout;
-const { Column, ColumnGroup } = Table;
+const { Column } = Table;
 class DataStatitics extends Component {
     constructor(props) {
         super(props);
@@ -49,7 +49,7 @@ class DataStatitics extends Component {
                 this.dataResult.push(dataUpdateResult);
                 this.setState(preState => {
                 const newItems = [...preState.data];
-                newItems[index].result=value;
+                newItems[record.key-1].result=value;
                 return {data: newItems};
             })
               });
@@ -91,22 +91,15 @@ class DataStatitics extends Component {
                         <Column title="Name of Device" dataIndex='machine_name' key='machine_name'></Column>
                         <Column title="Mass" dataIndex='mass' key='mass'></Column>
                         <Column title='Fruit' dataIndex='typeOfFruit' key='typeOfFruit'></Column>
-                        <ColumnGroup title='Set up'>
-                            <Column title='°C' dataIndex='temperature' key='temperature' render ={temperature=>{
-                                return (
-                                    <span>
-                                        <Tag color={'red'}>{temperature}</Tag>
-                                    </span>
-                                )
-                            }}/>
-                            <Column title='%' dataIndex='humidity' key='humidity' render ={humidity=>{
-                                return (
-                                    <span>
-                                        <Tag color={'blue'}>{humidity}</Tag>
-                                    </span>
-                                )
-                            }}/>
-                        </ColumnGroup>
+
+                        <Column title='Script' dataIndex='script' key='script' render ={script=>{
+                            return (
+                                <span>
+                                    <Tag color={'red'}>{script}</Tag>
+                                </span>
+                            )
+                        }}/>
+
                         <Column title='Person in chagre' dataIndex='user_email' key='user_email'></Column>
                         <Column title='Time start' dataIndex='timeStart' key='timeStart'></Column>
                         <Column title='Time stop' dataIndex='timeFinish' key='timeFinish'></Column>
