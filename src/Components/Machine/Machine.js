@@ -57,6 +57,7 @@ class Machine extends Component {
             timeFinish:0,
             isChange:true, //To set change for device
             isChooseScript: true, // To switch choose script and create script
+            statusMachine:false,
             // nameOfChoosenScript:'',
             flagTime:false, //To get standard time
             standardTime:0,
@@ -119,7 +120,8 @@ class Machine extends Component {
         if(this.props.location.aboutProps.name===value.machine){
             this.setState({
                 dataDevice: value.data,
-                isChange:true
+                isChange:true,
+                statusMachine:value.stt
             })
         }
         
@@ -139,9 +141,11 @@ class Machine extends Component {
         let allScripts = await getAllScripts();
         let dataDevice = await getDataDevice(this.props.location.aboutProps.name)
         let data = dataDevice.dataDevice;
+        let stt = dataDevice.statusMachine;
         this.setState({
             listScript:allScripts,
-            dataDevice:data
+            dataDevice:data,
+            statusMachine:stt
         })
     }
 
@@ -179,7 +183,7 @@ class Machine extends Component {
 
     async send(){
         console.log("Sent!!!!"+JSON.stringify(this.state.dataDevice));
-        this.socket.emit('client-send-control', {machine:this.props.location.aboutProps.name,data: this.state.dataDevice});
+        this.socket.emit('client-send-control', {machine:this.props.location.aboutProps.name,stt:true,data: this.state.dataDevice});
         let temp='';
         await this.state.dataDevice.forEach(e=>{
             temp=temp+Number(e.status);
@@ -226,7 +230,8 @@ class Machine extends Component {
         })
         
         
-        this.socket.emit('client-send-control', this.state.dataDevice);
+        // this.socket.emit('client-send-control', this.state.dataDevice);
+        this.socket.emit('client-send-control', {machine:this.props.location.aboutProps.name,stt:false,data: this.state.dataDevice});
         
         let myTime = Date.now() - this.state.standardTime;
         let obj = {time: myTime,stt:'0000'}
@@ -246,7 +251,6 @@ class Machine extends Component {
             listScript: [...prevState.listScript, resultForlistScript]
         }))
         console.log(this.state.listScript)
-        // this.state.listScript.push(result);
         addScript(resultForSubmit).then(res=>{
             console.log(res)
         }).catch(err=>{
@@ -286,7 +290,9 @@ class Machine extends Component {
             dataDevice:deviceArr,
             isChange:false
         })
-        this.socket.emit('client-send-control', this.state.dataDevice);
+        // this.socket.emit('client-send-control', this.state.dataDevice);
+        this.socket.emit('client-send-control', {machine:this.props.location.aboutProps.name,stt:true,data: this.state.dataDevice});
+
         console.log("sent!!!");
         setTimeout(r, ms)
     })
@@ -301,6 +307,7 @@ class Machine extends Component {
           await this.waitFor(element.stt,element.time)
         })
         await this.onClickSendConfig();
+        await this.socket.emit('client-send-control-complete', {machine:this.props.location.aboutProps.name,stt:false,data: this.state.dataDevice});
         console.log('Done')
     }
 
@@ -474,26 +481,45 @@ class Machine extends Component {
     }
 
     onClickChooseScript(){
-        swal("Nhập tên kịch bản mới", {
-            content: "input",
-            icon: 'info'
-        })
-        .then((value) => {
-            if(value===''){
-                return
-            }
-            this.setState({
-                isChooseScript: false,
-                nameOfChoosenScript: value
+        if(this.state.statusMachine===true){
+            swal({
+                title: "Oppesss...!",
+                text: "Khổng thể sử dụng chức năng này khi máy đang hoạt động!",
+                icon: "warning",
+                button: "OK",
+              });
+        }else{
+            swal("Nhập tên kịch bản mới", {
+                content: "input",
+                icon: 'info'
             })
-          });
+            .then((value) => {
+                if(value===''){
+                    return
+                }
+                this.setState({
+                    isChooseScript: false,
+                    nameOfChoosenScript: value
+                })
+              });
+        }
+        
         
     }
 
     onClickCreateScript(){
-        this.setState({
-            isChooseScript: true
-        })
+        if(this.state.statusMachine===true){
+            swal({
+                title: "Oppesss...!",
+                text: "Khổng thể sử dụng chức năng này khi máy đang hoạt động!",
+                icon: "warning",
+                button: "OK",
+              });
+        }else{
+            this.setState({
+                isChooseScript: true
+            })
+        }
     }
 
     showSwitch(){

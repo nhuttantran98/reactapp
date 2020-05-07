@@ -12,7 +12,7 @@ class Login extends Component {
     formRef = React.createRef();
     onFinish = values => {
         login({email:values.username,password:values.password}).then(res=>{
-            if(res){
+            if(!res.error){
                 auth.login(()=>{
                     this.props.history.push(`/all-user`);
                 })
