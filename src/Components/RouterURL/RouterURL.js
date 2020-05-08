@@ -16,6 +16,7 @@ import MachineEdit from '../MachinePage/MachineEdit/MachineEdit';
 import page404 from '../page404/page404';
 import DataStatitics from '../DataStatitics/DataStatitics';
 import Script from '../Script.js/Script';
+import AcceptQLRoute from '../ProtectRoute/acceptQLRoute';
 
 class RouterURL extends Component {
 
@@ -24,7 +25,7 @@ class RouterURL extends Component {
                 <div>
                     <Switch>
                         <Route  exact path="/" component={Login}/>
-                        <Route  path="/data-statistics" component={DataStatitics}/>
+                        <AcceptQLRoute  path="/data-statistics" component={DataStatitics}/>
                         <ProtectedRoute  path="/all-user" component={UserTable}/>
                         <ProtectedRoute  path="/add-user" component={UserAddAccount}/>
                         <Route  exact path="/all-machine" component={MachineTable}/>

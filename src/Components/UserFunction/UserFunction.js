@@ -26,7 +26,8 @@ export const login = user => {
         })
         .then(response=>{
             localStorage.setItem('useremail',user.email)
-            localStorage.setItem('usertoken',response.data);
+            localStorage.setItem('usertoken',response.data.token);
+            localStorage.setItem('role',response.data.role);
             console.log(response)
             return response.data;
         })
