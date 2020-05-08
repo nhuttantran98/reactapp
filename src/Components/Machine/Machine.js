@@ -57,7 +57,7 @@ class Machine extends Component {
             timeFinish:0,
             isChange:true, //To set change for device
             isChooseScript: true, // To switch choose script and create script
-            statusMachine:false,
+            statusMachine:0,
             // nameOfChoosenScript:'',
             flagTime:false, //To get standard time
             standardTime:0,
@@ -183,7 +183,7 @@ class Machine extends Component {
 
     async send(){
         console.log("Sent!!!!"+JSON.stringify(this.state.dataDevice));
-        this.socket.emit('client-send-control', {machine:this.props.location.aboutProps.name,stt:true,data: this.state.dataDevice});
+        this.socket.emit('client-send-control', {machine:this.props.location.aboutProps.name,stt:1,data: this.state.dataDevice});
         let temp='';
         await this.state.dataDevice.forEach(e=>{
             temp=temp+Number(e.status);
@@ -231,7 +231,7 @@ class Machine extends Component {
         
         
         // this.socket.emit('client-send-control', this.state.dataDevice);
-        this.socket.emit('client-send-control', {machine:this.props.location.aboutProps.name,stt:false,data: this.state.dataDevice});
+        this.socket.emit('client-send-control', {machine:this.props.location.aboutProps.name,stt:0,data: this.state.dataDevice});
         
         let myTime = Date.now() - this.state.standardTime;
         let obj = {time: myTime,stt:'0000'}
@@ -291,7 +291,7 @@ class Machine extends Component {
             isChange:false
         })
         // this.socket.emit('client-send-control', this.state.dataDevice);
-        this.socket.emit('client-send-control', {machine:this.props.location.aboutProps.name,stt:true,data: this.state.dataDevice});
+        this.socket.emit('client-send-control', {machine:this.props.location.aboutProps.name,stt:1,data: this.state.dataDevice});
 
         console.log("sent!!!");
         setTimeout(r, ms)
@@ -307,7 +307,7 @@ class Machine extends Component {
           await this.waitFor(element.stt,element.time)
         })
         await this.onClickSendConfig();
-        await this.socket.emit('client-send-control-complete', {machine:this.props.location.aboutProps.name,stt:false,data: this.state.dataDevice});
+        await this.socket.emit('client-send-control-complete', {machine:this.props.location.aboutProps.name,stt:0,data: this.state.dataDevice});
         console.log('Done')
     }
 
@@ -481,7 +481,7 @@ class Machine extends Component {
     }
 
     onClickChooseScript(){
-        if(this.state.statusMachine===true){
+        if(this.state.statusMachine===1){
             swal({
                 title: "Oppesss...!",
                 text: "Khổng thể sử dụng chức năng này khi máy đang hoạt động!",
@@ -508,7 +508,7 @@ class Machine extends Component {
     }
 
     onClickCreateScript(){
-        if(this.state.statusMachine===true){
+        if(this.state.statusMachine===1){
             swal({
                 title: "Oppesss...!",
                 text: "Khổng thể sử dụng chức năng này khi máy đang hoạt động!",
