@@ -24,6 +24,7 @@ export const register = machine =>{
             name: machine.name,
             position:machine.position,
             description: machine.description,
+            code: machine.code
         })
         .then(response=>{
             console.log('Registerd');
