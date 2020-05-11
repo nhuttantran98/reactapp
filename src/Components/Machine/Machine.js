@@ -56,6 +56,7 @@ class Machine extends Component {
             timeFinishActive:'',
             timeFinish:0,
             isChange:true, //To set change for device
+            isDisabled:false, //To set chagne for sw
             isChooseScript: true, // To switch choose script and create script
             statusMachine:0,
             // nameOfChoosenScript:'',
@@ -121,7 +122,8 @@ class Machine extends Component {
             this.setState({
                 dataDevice: value.data,
                 isChange:true,
-                statusMachine:value.stt
+                statusMachine:value.stt,
+                isDisabled:false
             })
         }
         
@@ -196,7 +198,8 @@ class Machine extends Component {
             this.setState({
                 flagTime:true,
                 standardTime: Date.now(),
-                timeStartActive:timeStart
+                timeStartActive:timeStart,
+                isDisabled:true
             })
             this.setState(prevState => ({
                 dataNewScript: [...prevState.dataNewScript, obj],
@@ -207,7 +210,8 @@ class Machine extends Component {
             let obj={time:myTime,stt:temp};
             this.setState(prevState => ({
                 dataNewScript: [...prevState.dataNewScript, obj],
-                standardTime:Date.now()
+                standardTime:Date.now(),
+                isDisabled:true
             }))
             
 
@@ -221,7 +225,8 @@ class Machine extends Component {
         this.setState({
             isChange:false,
             flagTime:false,
-            timeFinishActive:timeFinish
+            timeFinishActive:timeFinish,
+            isDisabled:true
         })
         await this.setState(preState => {
             let newItems = [...preState.dataDevice];
@@ -420,7 +425,7 @@ class Machine extends Component {
                     <div style={{display:'flex',flexWrap:'wrap'}}>
                     {this.state.dataDevice.map((item) =>
                         <div key={item.id} style={{width:'50%'}}>
-                            <Device isChange={this.state.isChange} status={item.status} id={item.id} changeStatus={this.changeStatus.bind(this)}>{item.title}</Device>
+                            <Device isDisabled={this.state.isDisabled} isChange={this.state.isChange} status={item.status} id={item.id} changeStatus={this.changeStatus.bind(this)}>{item.title}</Device>
                         </div>
                     )}
                     </div>
