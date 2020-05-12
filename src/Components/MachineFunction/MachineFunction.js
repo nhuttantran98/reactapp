@@ -66,7 +66,8 @@ export const updateMachine = machine =>{
             id: machine.id,
             position: machine.position,
             name: machine.name,
-            description: machine.description
+            description: machine.description,
+            code: machine.code
         })
         .then(response=>{
             console.log(response);
