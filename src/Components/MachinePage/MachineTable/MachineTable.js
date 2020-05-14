@@ -12,7 +12,7 @@ class MachineTable extends Component {
 
     constructor(props) {
         super(props);
-        const endpoint = "localhost:5555";
+        const endpoint = "192.168.2.19:2017";
         this.state = {
             data:[]
             //     {
