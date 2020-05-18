@@ -43,7 +43,7 @@ class MachineEdit extends Component {
             ...values,
             // 'dob': DOB.format('YYYY-MM-DD'),
         }
-        updateMachine({id: this.state.id,name: result.name, position: result.position, description: result.description}).then(res=>{
+        updateMachine({id: this.state.id,name: result.name, position: result.position, description: result.description,code:result.code}).then(res=>{
             if(res!=="error"){
                 swal({
                     title: "Tadaa...!",
