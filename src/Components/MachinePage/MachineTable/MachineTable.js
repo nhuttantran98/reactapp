@@ -155,7 +155,6 @@ class MachineTable extends Component {
                     {this.state.data.map((item)=>
                         <div key={item.key.toString()}  style={{backgroundColor: '#f1f1f1', width:'30%', margin:'22px', textAlign: 'center', lineHeight:'75px', fontSize:'30px',borderRadius:'6px'}}>
                         <div id="name-machine" style={{fontSize: "35px",color:"#1890ff"}} onClick={()=>this.checkStatusMachine(item.key)}>{item.name}</div>
-                        
                         {this.showStatusMachine(item.statusMachine)}
                         <div>{item.position}</div>
                         <div>

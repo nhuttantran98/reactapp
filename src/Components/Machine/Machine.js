@@ -12,26 +12,26 @@ import Device from './Device/Device';
 import MiniDevice from './Device/MiniDevice';
 import socketIOClient from 'socket.io-client';
 
-const marksTemp = {
-    50: '50°C',
+// const marksTemp = {
+//     50: '50°C',
 
-    200: {
-        style: {
-            color: '#f50',
-        },
-        label: <strong>200°C</strong>,
-    },
-};
-const marksHumid = {
-    50: '50%',
+//     200: {
+//         style: {
+//             color: '#f50',
+//         },
+//         label: <strong>200°C</strong>,
+//     },
+// };
+// const marksHumid = {
+//     50: '50%',
 
-    200: {
-        style: {
-            color: '#f50',
-        },
-        label: <strong>100%</strong>,
-    },
-};
+//     200: {
+//         style: {
+//             color: '#f50',
+//         },
+//         label: <strong>100%</strong>,
+//     },
+// };
 const marksMass = {
     0: '0 Kg',
     50: '50 Kg',
@@ -112,14 +112,30 @@ class Machine extends Component {
                 isDisabled: false            // Can switch or not - To prevent Double CLick when Machine not received ACK from Server
             })
         }
+        if(this.state.statusMachine===-1){
+            swal({
+                title: "Oppsss...!",
+                text: "Máy sấy đã bị tắt!",
+                icon: "error",
+                button: "OK",
+            });
+        }
+        
     }
 
     getDataServer = value => {  //Function active when have event Socket.on('server-send-data')
-        this.dataChart.push(value)
-        if (this.dataChart.length > 15) this.dataChart.shift();  // Delete 1 item in array when array > 15 item - To look chart better
-        this.setState({
-            dataLineChart: this.dataChart
-        })
+        if(this.props.location.aboutProps.code === value.machine){
+            let dataSample = {
+                x: value.time,
+                y: value.temp
+            }
+            this.dataChart.push(dataSample)
+            if (this.dataChart.length > 15) this.dataChart.shift();  // Delete 1 item in array when array > 15 item - To look chart better
+            this.setState({
+                dataLineChart: this.dataChart
+            })
+        }
+        
     }
 
     async componentDidMount() {
@@ -302,7 +318,10 @@ class Machine extends Component {
     // Create asyn FOR loop
     asyncForEach = async (array, callback) => {
         for (let index = 0; index < array.length; index++) {
-            if (this.state.statusMachine === -1) break;
+            if (this.state.statusMachine === -1) {
+                
+                break;
+            }
             await callback(array[index], index, array)
         }
     }

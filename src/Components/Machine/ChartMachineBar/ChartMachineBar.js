@@ -44,7 +44,7 @@ class ChartMachine extends Component {
             display: true,
             ticks: {
                 beginAtZero: true,
-                max: 40
+                max: 100
             }
         }]
         }

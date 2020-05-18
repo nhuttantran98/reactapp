@@ -29,12 +29,20 @@ class TestSocket extends Component {
     }
     onClickTest(){
         this.socket.emit('rasp-ready','abc123');
+        
+    }
+
+    onClickSendData(){
+        this.socket.emit('rasp-send-data',{machine:'abc123',temp:35.6,humid:98.6});
     }
     render() {
         return (
             <div>
                 <Button  style={{ fontSize: '18px', height:'45px' }} onClick={()=>this.onClickTest()}>
                     Test
+                </Button>
+                <Button  style={{ fontSize: '18px', height:'45px' }} onClick={()=>this.onClickSendData()}>
+                    Send Data
                 </Button>
             </div>
         );
