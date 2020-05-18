@@ -42,9 +42,9 @@ class Device extends Component {
 
     render() {
         return (
-            <div style={{margin:'35px',background: '#ececec', padding:'40px 0px'}} >
+            <div style={{margin:'35px',background: '#ececec', padding:'40px 0px',borderRadius:'6px'}} >
                 <div style={{width:'100%',display:'flex'}}>
-                    <div style={{width:'20%'}}><Switch disabled={this.props.isDisabled} checked={this.props.status} onClick={()=> {this.props.changeStatus(this.props.id,this.props.status)}}/></div>
+                    <div style={{width:'20%',paddingLeft:'10px'}}><Switch disabled={this.props.isDisabled} checked={this.props.status} onClick={()=> {this.props.changeStatus(this.props.id,this.props.status)}}/></div>
                     <div style={{width:'60%',textAlign:'center',fontSize:'25px',fontFamily:'monospace',fontWeight:'bold'}} >{this.props.children}</div>
                     <div style={{width:'20%'}}></div>
                 </div>

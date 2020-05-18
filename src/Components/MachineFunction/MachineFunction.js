@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {saveAs} from 'file-saver';
 
+// Get All Machines show in Machine Table
 export const getAllMachines = user => {
     return axios
         .get('/machines/get-all-machines',{
@@ -16,8 +17,7 @@ export const getAllMachines = user => {
         })
 }
 
-
-
+// Add machine
 export const register = machine =>{
     return axios
         .post('/machines/register',{
@@ -34,10 +34,11 @@ export const register = machine =>{
         })
 }
 
-export const getDataDevice = machineName => {
+// Get Status of 4 Devices
+export const getDataDevice = machineCode => {
     return axios
         .post('/machines/get-data-device',{
-            name: machineName
+            code: machineCode
         })
         .then(response=>{
             return response.data;
@@ -92,6 +93,7 @@ export const deleteMachine = machine =>{
         })
 }
 
+// Add Result
 export const addSetup = setup =>{
     return axios
         .post('/setups/add-setup',{
@@ -112,6 +114,7 @@ export const addSetup = setup =>{
         })
 }
 
+// Get All result 
 export const getAllSetups = setup => {
     return axios
         .get('/setups/get-all-setups',{
@@ -161,6 +164,7 @@ export const getAllScripts = scripts => {
         })
 }
 
+// Update GOOD BAD MEDIUM when close page
 export const updateResult = setup => {
     return axios
         .post('/setups/update-setups',{
@@ -193,5 +197,4 @@ export const getPDF = () => {
             console.log(err);
             return err;
         })
-    
 }

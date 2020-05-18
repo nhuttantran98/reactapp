@@ -18,7 +18,6 @@ class DataStatitics extends Component {
             //         humid:'96',
             //         timeStart: new Date().toString().slice(0,24),
             //         timeStop: new Date().toString().slice(0,24),
-                    
             //     }
         }
     }
@@ -69,19 +68,19 @@ class DataStatitics extends Component {
         for(const object of this.dataResult){
             // eslint-disable-next-line
             let res = await updateResult(object)
-
         }
     }
     
     
     render() {
         return (  
-            
             <Content style={{ margin: '0 16px' }}>
+
                 <Breadcrumb style={{ margin: '16px 0' }}>
                     <Breadcrumb.Item></Breadcrumb.Item>
                     <Breadcrumb.Item></Breadcrumb.Item>
                 </Breadcrumb>
+
                 <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
                     <Table dataSource={this.state.data} onRow={(record,rowIndex)=>{
                         return {
@@ -91,7 +90,6 @@ class DataStatitics extends Component {
                         <Column title="Name of Device" dataIndex='machine_name' key='machine_name'></Column>
                         <Column title="Mass" dataIndex='mass' key='mass'></Column>
                         <Column title='Fruit' dataIndex='typeOfFruit' key='typeOfFruit'></Column>
-
                         <Column title='Script' dataIndex='script' key='script' render ={script=>{
                             return (
                                 <span>
@@ -99,7 +97,6 @@ class DataStatitics extends Component {
                                 </span>
                             )
                         }}/>
-
                         <Column title='Person in chagre' dataIndex='user_email' key='user_email'></Column>
                         <Column title='Time start' dataIndex='timeStart' key='timeStart'></Column>
                         <Column title='Time stop' dataIndex='timeFinish' key='timeFinish'></Column>
@@ -112,9 +109,11 @@ class DataStatitics extends Component {
                             )
                         }}></Column>
                     </Table>
+
                     <Button onClick={()=>{this.generateReport()}}>Generate Report</Button>
+                    
                 </div>
-                
+
             </Content>
         );
     }

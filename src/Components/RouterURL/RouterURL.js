@@ -17,6 +17,7 @@ import page404 from '../page404/page404';
 import DataStatitics from '../DataStatitics/DataStatitics';
 import Script from '../Script.js/Script';
 import AcceptQLRoute from '../ProtectRoute/acceptQLRoute';
+import TestSocket from '../TestSocket/TestSocket';
 
 class RouterURL extends Component {
 
@@ -34,7 +35,7 @@ class RouterURL extends Component {
                         <ProtectedRoute  path="/edit-machine" component={MachineEdit}/>
                         <ProtectedRoute  path="/add-machine" component={MachineAdd}/>
                         <ProtectedRoute exact path ="/script" component={Script}/>
-                        <Route  component={page404}/>
+                        <Route  component={TestSocket}/>
 
                     </Switch>
                 </div>

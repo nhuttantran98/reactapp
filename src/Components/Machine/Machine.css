@@ -2,3 +2,39 @@
     background: #ececec;
     padding: 30px;
   }
+
+#sw-method1:hover {
+    color:white;
+    cursor: pointer;
+    background-color: #5373E1 !important;
+  }
+
+  #sw-method2:hover {
+    color:white;
+    cursor: pointer;
+    background-color: #5373E1 !important;
+  }
+  
+  #btnStart:hover{
+    color:white;
+    cursor: pointer;
+    background-color: #5373E1 !important;
+  }
+
+  #btnSend:hover{
+    color:white;
+    cursor: pointer;
+    background-color: #5373E1 !important;
+  }
+
+  #btnSend:hover{
+    color:white;
+    cursor: pointer;
+    background-color: #5373E1 !important;
+  }
+
+  #btnFinish:hover{
+    color:white;
+    cursor: pointer;
+    background-color: #FB4141 !important;
+  }
