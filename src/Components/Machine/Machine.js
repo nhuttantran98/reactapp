@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Row, Col, Slider, Select, Button } from 'antd';
 import ChartMachine from './ChartMachine/ChartMachine';
 import ChartMachineBar from './ChartMachineBar/ChartMachineBar';
-import { addSetup, getAllScripts, addScript, getDataDevice } from './../MachineFunction/MachineFunction';
+import { addSetup, getAllScripts, addScript, getDataDevice, updateTimeFinishSetup } from './../MachineFunction/MachineFunction';
 
 import { RetweetOutlined } from '@ant-design/icons';
 import swal from '@sweetalert/with-react'
@@ -50,12 +50,12 @@ class Machine extends Component {
     constructor(props) {
         super(props);
         this.countdownRef = React.createRef();
-        const endpoint = "192.168.100.20:2017";
+        const endpoint = "192.168.100.5:2017";
         this.state = {
             timeActive: false,       // Show Time Start / Time Finish or not
             timeStartActive: '',
             timeFinishActive: '',
-            timeFinish: 0,
+            timeFinish: 0,            // Amount of time to Finish
             isChange: true,          //  To set change for device
             isDisabled: false,       //  To set change for Switch of device
             isChooseScript: true,   //  To switch choose script and create script
@@ -63,6 +63,7 @@ class Machine extends Component {
             flagTime: false,         //  To get standard time
             standardTime: 0,
             choosenScript: '',       //  Script Activity
+            idSetup:'',             // Id of Setup which is submited!
             nameOfChoosenScript: '', //  Name of Script
             dataLineChart: [],
             dataControl: {
@@ -210,6 +211,7 @@ class Machine extends Component {
             this.setState(prevState => ({
                 dataNewScript: [...prevState.dataNewScript, obj],
             }))
+            this.onClickSendConfigNotTimeFinish();
 
         } else {
             let myTime = Date.now() - this.state.standardTime;
@@ -272,7 +274,7 @@ class Machine extends Component {
         })
 
         // Update to Server the result when adding new script
-        this.onClickSendConfig();
+        this.updateConfigTimeFinish();
 
         this.setState({
             dataNewScript: [],   // Delete dataNewScript for another create newScript
@@ -280,19 +282,58 @@ class Machine extends Component {
     }
 
     // Send result to server
-    onClickSendConfig() {
+
+    // onClickSendConfig() {
+    //     const setup = {
+    //         user_email: localStorage.getItem('useremail'),
+    //         machine_name: this.props.location.aboutProps.name,
+    //         mass: this.state.dataControl.massValue,
+    //         script: this.state.nameOfChoosenScript,
+    //         typeOfFruit: this.state.dataControl.selectedFruit,
+    //         timeStart: this.state.timeStartActive.slice(0, 24),
+    //         timeFinish: this.state.timeFinishActive.slice(0, 24)
+    //     }
+
+    //     addSetup(setup).then(res => {
+    //         console.log(res);
+
+    //     }).catch(err => {
+    //         console.log(err)
+    //     })
+    // }
+
+    updateConfigTimeFinish(){
+        const setup = {
+            id: this.state.idSetup,
+            time:this.state.timeFinishActive.slice(0, 24)
+        }
+
+        updateTimeFinishSetup(setup).then(res=>{
+            console.log(res)
+        }).catch(err=>{
+            console.log(err)
+        })
+        this.socket.emit('client-get-data-complete',{machine:this.props.location.aboutProps.code,idSetup:this.state.idSetup})
+    }
+
+    onClickSendConfigNotTimeFinish() {
         const setup = {
             user_email: localStorage.getItem('useremail'),
             machine_name: this.props.location.aboutProps.name,
+            code: this.props.location.aboutProps.code,
             mass: this.state.dataControl.massValue,
             script: this.state.nameOfChoosenScript,
             typeOfFruit: this.state.dataControl.selectedFruit,
-            timeStart: this.state.timeStartActive.slice(0, 24),
-            timeFinish: this.state.timeFinishActive.slice(0, 24)
+            timeStart: this.state.timeStartActive.slice(0, 24)
+            // timeFinish: this.state.timeFinishActive.slice(0, 24)
         }
 
         addSetup(setup).then(res => {
             console.log(res)
+            this.setState({
+                idSetup:res.id
+            })
+            this.socket.emit('client-get-data',{machine:this.props.location.aboutProps.code,idSetup:res.id})
         }).catch(err => {
             console.log(err)
         })
@@ -331,25 +372,26 @@ class Machine extends Component {
         await this.asyncForEach(arr, async (element) => {
             await this.waitFor(element.stt, element.time)
         })
-        await this.onClickSendConfig();
+        await this.updateConfigTimeFinish();
         if (this.state.statusMachine !== -1) {
             await this.socket.emit('client-send-control-complete', { machine: this.props.location.aboutProps.code, stt: 0, data: this.state.dataDevice });
         }
     }
 
     // Start Auto Method
-    onClickStartScript() {
+    async onClickStartScript() {
         if (this.state.choosenScript) {
             let temp = new Date().getTime();
             let tempFinish = temp + this.state.timeFinish;
             let timeStart = new Date(temp).toString();
             let timeFinish = new Date(tempFinish).toString();
-            this.setState({
+            await this.setState({
                 timeActive: true,
                 timeStartActive: timeStart,
                 timeFinishActive: timeFinish
             })
-            let rs = JSON.parse(this.state.choosenScript);
+            this.onClickSendConfigNotTimeFinish();
+            let rs = JSON.parse(this.state.choosenScript); //convert to array
             for (let index = 0; index < rs.length; index++) {
                 if (index !== rs.length - 1) {
                     rs[index].time = rs[index + 1].time

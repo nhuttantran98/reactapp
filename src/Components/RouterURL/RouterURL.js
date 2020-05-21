@@ -18,6 +18,7 @@ import DataStatitics from '../DataStatitics/DataStatitics';
 import Script from '../Script.js/Script';
 import AcceptQLRoute from '../ProtectRoute/acceptQLRoute';
 import TestSocket from '../TestSocket/TestSocket';
+import ShowChartSetup from '../DataStatitics/ShowChartSetup';
 
 class RouterURL extends Component {
 
@@ -31,6 +32,7 @@ class RouterURL extends Component {
                         <ProtectedRoute  path="/add-user" component={UserAddAccount}/>
                         <Route  exact path="/all-machine" component={MachineTable}/>
                         <Route  path="/all-machine/:name" component={Machine}/>
+                        <Route path="/data-chart/:key" component={ShowChartSetup}/>
                         <ProtectedRoute  path="/edit-user" component={EditUser}/>
                         <ProtectedRoute  path="/edit-machine" component={MachineEdit}/>
                         <ProtectedRoute  path="/add-machine" component={MachineAdd}/>

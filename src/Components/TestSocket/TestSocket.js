@@ -3,10 +3,12 @@ import socketIOClient from 'socket.io-client';
 import {Button} from 'antd';
 
 class TestSocket extends Component {
+    intervalId=0;
     constructor(props) {
         super(props);
-        const endpoint = "192.168.100.20:2017";
+        const endpoint = "52.163.241.147:80";
         this.state = {
+            clear:false,
             data:[]
             //     {
             //         key:'4',
@@ -20,16 +22,24 @@ class TestSocket extends Component {
         this.socket = socketIOClient(endpoint);
     }
     componentDidMount(){
+        
         this.socket.on('server-send-ack-machineTable',data=>{
             console.log(data)
         });
         this.socket.on('server-send-ack',data=>{
             console.log(data);
         })
+        this.socket.on('server-get-data',data=>{
+            this.intervalId = setInterval(() => {
+                this.socket.emit('rasp-send-data',{machine:'abc123',temp:12,humid:15,idSetup:data.idSetup});
+            }, 3000);
+        })
+        this.socket.on('server-get-data-complete',data=>{
+            clearInterval(this.intervalId);
+        })
     }
     onClickTest(){
         this.socket.emit('rasp-ready','abc123');
-        
     }
 
     onClickSendData(){
@@ -43,6 +53,9 @@ class TestSocket extends Component {
                 </Button>
                 <Button  style={{ fontSize: '18px', height:'45px' }} onClick={()=>this.onClickSendData()}>
                     Send Data
+                </Button>
+                <Button  style={{ fontSize: '18px', height:'45px' }} onClick={()=>this.onClickSendDataAuto()}>
+                    Cancel Data Auto
                 </Button>
             </div>
         );

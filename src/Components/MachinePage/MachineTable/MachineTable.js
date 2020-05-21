@@ -11,7 +11,7 @@ class MachineTable extends Component {
 
     constructor(props) {
         super(props);
-        const endpoint = "192.168.100.20:2017";
+        const endpoint = "192.168.100.5:2017";
         this.state = {
             data:[]
             //     {

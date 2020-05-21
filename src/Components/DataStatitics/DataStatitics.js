@@ -35,6 +35,14 @@ class DataStatitics extends Component {
         this.setState({
             data:result
         })
+        console.log(this.state.data)
+    }
+
+    handleOnRowShowData= (record) => {
+        this.props.history.push({
+            pathname:'/data-chart/'+record.key,
+            aboutProps:{setupId:`${record.key}`,machine:`${record.code}`}
+        })
     }
 
     handleOnRowClick = (record,index) => {
@@ -45,10 +53,12 @@ class DataStatitics extends Component {
             })
             .then((value) => {
                 let dataUpdateResult = {id: record.key,result:value};
+                console.log(dataUpdateResult);
                 this.dataResult.push(dataUpdateResult);
                 this.setState(preState => {
                 const newItems = [...preState.data];
-                newItems[record.key-1].result=value;
+                let rs = newItems.findIndex(el=> el.key===record.key)
+                newItems[rs].result=value;
                 return {data: newItems};
             })
               });
@@ -84,8 +94,10 @@ class DataStatitics extends Component {
                 <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
                     <Table dataSource={this.state.data} onRow={(record,rowIndex)=>{
                         return {
-                            onClick: ()=>{this.handleOnRowClick(record,rowIndex)}
-                        }
+                            onClick:()=>{this.handleOnRowShowData(record)},
+                            onDoubleClick: ()=>{this.handleOnRowClick(record,rowIndex);}
+                            
+                            }
                     }}>
                         <Column title="Name of Device" dataIndex='machine_name' key='machine_name'></Column>
                         <Column title="Mass" dataIndex='mass' key='mass'></Column>

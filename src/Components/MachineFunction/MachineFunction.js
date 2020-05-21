@@ -47,6 +47,8 @@ export const getDataDevice = machineCode => {
         })
 }
 
+
+
 export const getProfileMachine = id =>{
     return axios
         .post('/machines/profile',{id: id},{
@@ -79,6 +81,7 @@ export const updateMachine = machine =>{
         })
 }
 
+
 export const deleteMachine = machine =>{
     return axios
         .post('/machines/delete-machine',{
@@ -99,6 +102,7 @@ export const addSetup = setup =>{
         .post('/setups/add-setup',{
             user_email: setup.user_email,
             machine_name: setup.machine_name,
+            code:setup.code,
             mass: setup.mass,
             typeOfFruit:setup.typeOfFruit,
             timeStart:setup.timeStart,
@@ -129,6 +133,8 @@ export const getAllSetups = setup => {
             console.log(err);
         })
 }
+
+
 
 export const addScript = script => {
     let myScript = JSON.stringify(script.script);
@@ -179,6 +185,37 @@ export const updateResult = setup => {
             return err;
         })
     
+}
+
+export const updateTimeFinishSetup = setup => {
+    return axios
+        .post('/setups/update-time-setups',{
+            id: setup.id,
+            time: setup.time
+        })
+        .then(response=>{
+            console.log(response);
+            return response.data;
+        }).catch(err=>{
+            console.log(err);
+            return err;
+        })
+    
+}
+
+export const getDataChartSetup = setup => {
+    return axios
+        .post('/setups/get-data-chart-setup',{
+            id: setup.id,
+            code: setup.code
+        })
+        .then(response=>{
+            console.log(response);
+            return response.data;
+        }).catch(err=>{
+            console.log(err);
+            return err;
+        })
 }
 
 export const getPDF = () => {
