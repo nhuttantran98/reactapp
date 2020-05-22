@@ -20,7 +20,7 @@ export const register = newUser =>{
 
 export const login = user => {
     return axios
-        .post('/users/login',{
+        .post('http://52.163.241.147:5000/users/login',{
             email:user.email,
             password:user.password
         })
