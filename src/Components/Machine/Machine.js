@@ -50,7 +50,7 @@ class Machine extends Component {
     constructor(props) {
         super(props);
         this.countdownRef = React.createRef();
-        const endpoint = "192.168.100.5:2017";
+        const endpoint = "52.163.241.147:5000";
         this.state = {
             timeActive: false,       // Show Time Start / Time Finish or not
             timeStartActive: '',

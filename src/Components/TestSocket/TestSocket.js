@@ -6,7 +6,7 @@ class TestSocket extends Component {
     intervalId=0;
     constructor(props) {
         super(props);
-        const endpoint = "52.163.241.147:80";
+        const endpoint = "52.163.241.147:5000";
         this.state = {
             clear:false,
             data:[]
